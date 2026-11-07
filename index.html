@@ -3061,7 +3061,7 @@ select:focus { outline: none; border-color: var(--orange); }
   }
 }
 </style>
-\n</head>
+</head>
 <body>
 
 <!-- High-Performance GPU Canvas: GhostFibers React Component Mount -->
@@ -3153,7 +3153,7 @@ select:focus { outline: none; border-color: var(--orange); }
 
 <!-- 1. TAX CALCULATOR: Calculator Left, Burj Khalifa on the Right -->
 <section id="calc" class="snap-section">
-  <img src="assets/landmark/1.png" class="landmark-art landmark-khalifa" alt="Burj Khalifa" onerror="this.src='1.png'">
+  <img src="assets/landmark/1.png" class="landmark-art landmark-khalifa" alt="Burj Khalifa">
   <div class="wrap">
     <div class="calc-left-wrapper">
       <div class="wh" style="margin-bottom: 16px;">
@@ -3231,7 +3231,7 @@ select:focus { outline: none; border-color: var(--orange); }
 
 <!-- 2. ABOUT SECTION: CEO on Left, Burj Al Arab on the Right -->
 <section id="about" class="snap-section mw">
-  <img src="assets/landmark/2.png" class="landmark-art landmark-burj-al-arab" alt="Burj Al Arab" onerror="this.src='2.png'">
+  <img src="assets/landmark/2.png" class="landmark-art landmark-burj-al-arab" alt="Burj Al Arab">
   <div class="wrap">
     <div class="about-left-wrapper">
       <figure class="abp">
@@ -3266,7 +3266,7 @@ select:focus { outline: none; border-color: var(--orange); }
 
 <!-- 3. WHY UAE: Emirates Towers on Left, Cards on the Right (Scatter-Cluster Bloom Reveal) -->
 <section id="why" class="snap-section">
-  <img src="assets/landmark/3.png" class="landmark-art landmark-emirates-towers" alt="Emirates Towers" onerror="this.src='3.png'">
+  <img src="assets/landmark/3.png" class="landmark-art landmark-emirates-towers" alt="Emirates Towers">
   <div class="wrap">
     <div class="why-right-wrapper">
       <div class="wh">
@@ -3337,7 +3337,7 @@ select:focus { outline: none; border-color: var(--orange); }
 
 <!-- 5. PACKAGES: Dedicated Section with Dubai Frame on Right & Packages on Left -->
 <section id="packages" class="snap-section mw">
-  <img src="assets/landmark/5.png" class="landmark-art landmark-dubai-frame" alt="Dubai Frame" onerror="this.src='5.png'">
+  <img src="assets/landmark/5.png" class="landmark-art landmark-dubai-frame" alt="Dubai Frame">
   <div class="wrap">
     <div class="packages-left-wrapper">
       <div class="wh">
@@ -3701,11 +3701,11 @@ const SERV = [
 // Keep the gallery folder alongside this HTML file when deploying.
 const SERVICE_PHOTOS = [
   'assets/gallery/photo15.jpg',
-  'assets/gallery/photo2.JPG',
+  'assets/gallery/photo2.jpg',
   'assets/gallery/photo16.jpg',
   'assets/gallery/photo19.jpg',
   'assets/gallery/photo9.jpg',
-  'assets/gallery/photo17.JPG',
+  'assets/gallery/photo17.jpg',
   'assets/gallery/photo20.jpg',
   'assets/gallery/photo11.jpg'
 ];
@@ -4272,63 +4272,6 @@ if (logoTrack) {
   }, { passive: true });
 }
 
-// Gallery Lightbox
-const lb = $('#lb');
-const galItems = $$('.gallery-item');
-const galSrcs = Array.from(galItems).map(btn => btn.querySelector('img').src);
-let gi = 0;
-const show = i => { gi = (i + galSrcs.length) % galSrcs.length; $('#li').src = galSrcs[gi]; };
-galItems.forEach((btn, i) => { btn.onclick = () => { show(i); lb.classList.add('on'); }; });
-$('#lp').onclick = () => show(gi - 1); $('#ln').onclick = () => show(gi + 1);
-$('#lx').onclick = () => lb.classList.remove('on');
-lb.onclick = e => { if (e.target === lb) lb.classList.remove('on'); };
-document.addEventListener('keydown', e => {
-  if (!lb.classList.contains('on')) return;
-  if (e.key === 'Escape') lb.classList.remove('on');
-  if (e.key === 'ArrowLeft') show(gi - 1);
-  if (e.key === 'ArrowRight') show(gi + 1);
-});
-
-/* Slide Dot Navigation: robust click + scroll tracking, independent of GSAP. */
-const slideDots = Array.from(document.querySelectorAll('.slide-dot'));
-const snapSections = slideDots.map(dot => document.querySelector(dot.dataset.target)).filter(Boolean);
-function updateActiveDot(id) {
-  slideDots.forEach(dot => {
-    const active = dot.dataset.target === id;
-    dot.classList.toggle('active', active);
-    if (active) dot.setAttribute('aria-current', 'location');
-    else dot.removeAttribute('aria-current');
-  });
-}
-slideDots.forEach(dot => {
-  dot.addEventListener('click', event => {
-    event.preventDefault();
-    const target = document.querySelector(dot.dataset.target);
-    if (!target) return;
-    target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
-    updateActiveDot('#' + target.id);
-  });
-});
-let sectionTrackFrame = 0;
-function trackCurrentSection() {
-  sectionTrackFrame = 0;
-  if (!snapSections.length) return;
-  const marker = window.innerHeight * 0.42;
-  let current = snapSections[0];
-  let bestDistance = Infinity;
-  snapSections.forEach(section => {
-    const rect = section.getBoundingClientRect();
-    const distance = marker < rect.top ? rect.top - marker : marker > rect.bottom ? marker - rect.bottom : 0;
-    if (distance < bestDistance) { bestDistance = distance; current = section; }
-  });
-  updateActiveDot('#' + current.id);
-}
-window.addEventListener('scroll', () => {
-  if (!sectionTrackFrame) sectionTrackFrame = window.requestAnimationFrame(trackCurrentSection);
-}, { passive: true });
-window.addEventListener('resize', trackCurrentSection, { passive: true });
-window.addEventListener('load', trackCurrentSection, { once: true });
-trackCurrentSection();
 </script>
 
 <script type="text/babel">
