@@ -36,6 +36,7 @@ The file has these parts, in order:
 - When adding a style or script patch, follow the existing pattern: one id-tagged `<style>`/`<script>` block, named after the feature.
 - Animations check `prefers-reduced-motion`, in CSS and in the bg3d script. Keep that behavior when you add motion.
 - Contact CTAs point to WhatsApp `https://wa.me/971547775023`. There are several copies (nav, mobile menu, FAQ chat, contact section), so update all of them together.
-- Image paths are relative (`assets/team/*.png`, `assets/gallery/photoN.jpg`, `assets/landmark/N.png` plus `Nbnw.png` black-and-white versions, `assets/logos/N.png`).
-- `assets/burj_khalifa_web1.glb` is not referenced anywhere. Only `burj_khalifa_web.glb` is loaded.
+- Image paths are relative: `assets/team/*.webp`, `assets/kingahero.webp`, `assets/gallery/photoN.jpg` (built in code as `photo${n}.jpg`, so filenames must be lowercase `.jpg`), `assets/landmark/{1,2,3,5}.webp`, and `assets/landmark/Nbnw.png` black-and-white tiles (used only when the 3D scene is off), `assets/logos/N.png` (256 px, shown at about 60 px).
+- Images were sized to about 2× their largest rendered size. Original full-resolution files are in the baseline commit `e3fde59`.
+- Only `assets/burj_khalifa_web.glb` is loaded by the 3D scene.
 - The file is large. Search with grep and read line ranges instead of the whole file.
