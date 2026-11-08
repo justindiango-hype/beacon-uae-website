@@ -7738,6 +7738,7 @@ if (mount) {
   let activeIndex = 0;
   let timer = null;
   let pauseUntil = 0;
+  let userGen = 0; // increases on every user action; stale autoplay resets are skipped
   const intervalMs = 3000;
 
   function setStep(index, userInitiated) {
@@ -7758,7 +7759,7 @@ if (mount) {
     if (previous) previous.disabled = activeIndex === 0;
     if (next) next.disabled = activeIndex === stops.length - 1;
     if (status) status.textContent = 'Step ' + (activeIndex + 1) + ' of ' + stops.length;
-    if (userInitiated) pauseUntil = Date.now() + 3000;
+    if (userInitiated) { pauseUntil = Date.now() + 3000; userGen++; }
   }
 
   stops.forEach((stop, index) => {
@@ -7785,7 +7786,10 @@ if (mount) {
         /* Let the train enter the right-hand station, disappear behind it,
            then reappear from the left station at step 1. */
         if (train) train.style.opacity = '0';
+        const genAtLoop = userGen;
         window.setTimeout(() => {
+          /* The user picked a step during the fade-out: keep their choice, just show the train again. */
+          if (genAtLoop !== userGen) { if (train) train.style.opacity = '1'; return; }
           setStep(0, false);
           if (train) {
             train.style.transition = 'none';
@@ -9648,6 +9652,20 @@ html.nav-menu-open { scrollbar-gutter: stable; }
   #calc .calc-display-panel { gap: 12px !important; }
 }
 #calc .calc-disclaimer { margin: 14px 0 0; font-size: .74rem; line-height: 1.45; color: rgba(0,55,125,.72); }
+/* Short desktop screens (e.g. 1280x720, 1024x768): heading beside the calculator card so the
+   whole panel, including the CTA, fits under the nav without nested scrolling. */
+@media (min-width: 1024px) and (max-height: 820px) {
+  #calc .calc-left-wrapper {
+    width: min(1160px, 100%) !important; max-width: 1160px !important;
+    display: grid !important; grid-template-columns: minmax(0, 1fr) minmax(0, 2.1fr);
+    align-items: center; column-gap: clamp(20px, 2.4vw, 32px);
+    padding: 22px 24px !important;
+  }
+  #calc .calc-left-wrapper > .wh { margin-bottom: 0 !important; }
+  #calc .calc-left-wrapper > .wh h2 { font-size: clamp(1.5rem, 2.1vw, 2rem) !important; }
+  #calc .calc-left-wrapper > .wh .lead { font-size: .9rem; }
+  #calc .calc-card-outer { padding-block: 18px !important; }
+}
 
 /* 2. Team: keyboard focus, and a stacked active card on tablets/phones (text was clipped) */
 #team .ta-card:focus-visible { outline: 3px solid #004aad; outline-offset: 3px; }
