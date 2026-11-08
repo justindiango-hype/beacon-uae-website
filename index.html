@@ -3908,28 +3908,28 @@ const calcTl = gsap.timeline({
   scrollTrigger: { trigger: "#calc", start: "top 65%", toggleActions: "play none none reverse" }
 });
 calcTl.fromTo("#calc .wh .eb",
-  { y: 18, opacity: 0, filter: "blur(8px)" },
-  { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.55, ease: "power3.out" }
+  { y: 18, opacity: 0 },
+  { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" }
 )
 .fromTo("#calc .wh h2",
-  { y: 28, opacity: 0, filter: "blur(10px)" },
-  { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, ease: "power3.out" }, "-=0.25"
+  { y: 28, opacity: 0 },
+  { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.25"
 )
 .fromTo("#calc .wh .lead",
-  { y: 20, opacity: 0, filter: "blur(8px)" },
-  { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "power2.out" }, "-=0.42"
+  { y: 20, opacity: 0 },
+  { y: 0, opacity: 1, duration: 0.7, ease: "power2.out" }, "-=0.42"
 )
 .fromTo(".landmark-khalifa", 
-  { x: 90, opacity: 0, scale: 0.94, filter: "blur(12px)" }, 
-  { x: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 1, ease: "power3.out" }, "-=0.48"
+  { x: 90, opacity: 0, scale: 0.94 }, 
+  { x: 0, opacity: 1, scale: 1, duration: 1, ease: "power3.out" }, "-=0.48"
 )
 .fromTo(".calc-card-outer .calc-controls > *, .calc-card-outer .calc-display-panel > *",
   { y: 16, opacity: 0 },
   { y: 0, opacity: 1, duration: 0.5, stagger: 0.045, ease: "power2.out" }, "-=0.65"
 )
 .fromTo(".calc-card-outer", 
-  { x: -70, opacity: 0, scale: 0.96, filter: "blur(12px)" }, 
-  { x: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.9, ease: "power3.out" }, 
+  { x: -70, opacity: 0, scale: 0.96 }, 
+  { x: 0, opacity: 1, scale: 1, duration: 0.9, ease: "power3.out" }, 
   "-=0.7"
 );
 
@@ -3962,17 +3962,17 @@ const aboutTl = gsap.timeline({
   scrollTrigger: { trigger: "#about", start: "top 65%", toggleActions: "play none none reverse" }
 });
 aboutTl.fromTo(".landmark-burj-al-arab",
-  { x: 90, opacity: 0, scale: 0.94, filter: "blur(12px)" },
-  { x: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 1, ease: "power3.out" }
+  { x: 90, opacity: 0, scale: 0.94 },
+  { x: 0, opacity: 1, scale: 1, duration: 1, ease: "power3.out" }
 )
 .fromTo(".about-left-wrapper .abp",
-  { scale: 0.88, opacity: 0, y: 30, filter: "blur(15px)" },
-  { scale: 1, opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "back.out(1.4)" },
+  { scale: 0.88, opacity: 0, y: 30 },
+  { scale: 1, opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.4)" },
   "-=0.7"
 )
 .fromTo(".about-left-wrapper .stagger-abt > *",
-  { y: 25, opacity: 0, filter: "blur(8px)" },
-  { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.6, stagger: 0.1, ease: "power2.out" },
+  { y: 25, opacity: 0 },
+  { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power2.out" },
   "-=0.5"
 );
 
@@ -3981,12 +3981,12 @@ const whyTl = gsap.timeline({
   scrollTrigger: { trigger: "#why", start: "top 65%", toggleActions: "play none none reverse" }
 });
 whyTl.fromTo(".landmark-emirates-towers",
-  { x: -90, opacity: 0, scale: 0.94, filter: "blur(12px)" },
-  { x: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 1, ease: "power3.out" }
+  { x: -90, opacity: 0, scale: 0.94 },
+  { x: 0, opacity: 1, scale: 1, duration: 1, ease: "power3.out" }
 )
 .fromTo("#why .wh > *",
-  { y: 20, opacity: 0, filter: "blur(8px)" },
-  { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.5, stagger: 0.08, ease: "power2.out" },
+  { y: 20, opacity: 0 },
+  { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: "power2.out" },
   "-=0.7"
 );
 
@@ -4009,7 +4009,6 @@ whyTl.fromTo(whyCards,
     rotation: (i) => clusterAngles[i % clusterAngles.length],
     scale: 0.75,
     opacity: 0,
-    filter: "blur(15px)",
     boxShadow: "0 30px 60px rgba(0, 74, 173, 0.2)"
   },
   {
@@ -4018,7 +4017,6 @@ whyTl.fromTo(whyCards,
     rotation: 0,
     scale: 1,
     opacity: 1,
-    filter: "blur(0px)",
     boxShadow: "0 10px 30px rgba(0, 74, 173, 0.05)",
     duration: 0.85,
     stagger: 0.06,
@@ -4032,12 +4030,12 @@ const servTl = gsap.timeline({
   scrollTrigger: { trigger: "#services", start: "top 65%", toggleActions: "play none none reverse" }
 });
 servTl.fromTo("#services .wh > *",
-  { y: 20, opacity: 0, filter: "blur(9px)" },
-  { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.55, stagger: 0.09, ease: "power3.out" }
+  { y: 20, opacity: 0 },
+  { y: 0, opacity: 1, duration: 0.55, stagger: 0.09, ease: "power3.out" }
 )
 .fromTo(".service-card",
-  { y: 54, opacity: 0, rotationX: 16, scale: 0.9, filter: "blur(12px)" },
-  { y: 0, opacity: 1, rotationX: 0, scale: 1, filter: "blur(0px)", duration: 0.8, stagger: 0.09, ease: "back.out(1.25)" },
+  { y: 54, opacity: 0, rotationX: 16, scale: 0.9 },
+  { y: 0, opacity: 1, rotationX: 0, scale: 1, duration: 0.8, stagger: 0.09, ease: "back.out(1.25)" },
   "-=0.25"
 );
 
@@ -4046,12 +4044,12 @@ const packTl = gsap.timeline({
   scrollTrigger: { trigger: "#packages", start: "top 65%", toggleActions: "play none none reverse" }
 });
 packTl.fromTo(".landmark-dubai-frame",
-  { x: 90, opacity: 0, scale: 0.92, filter: "blur(12px)" },
-  { x: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 1, ease: "power3.out" }
+  { x: 90, opacity: 0, scale: 0.92 },
+  { x: 0, opacity: 1, scale: 1, duration: 1, ease: "power3.out" }
 )
 .fromTo("#packages .wh > *",
-  { y: 20, opacity: 0, filter: "blur(8px)" },
-  { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.5, stagger: 0.08, ease: "power2.out" },
+  { y: 20, opacity: 0 },
+  { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: "power2.out" },
   "-=0.7"
 );
 
@@ -4060,19 +4058,19 @@ const howTl = gsap.timeline({
   scrollTrigger: { trigger: "#how", start: "top 65%", toggleActions: "play none none reverse" }
 });
 howTl.fromTo("#how .wh > *",
-  { y: 20, opacity: 0, filter: "blur(8px)" },
-  { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.5, stagger: 0.08, ease: "power2.out" }
+  { y: 20, opacity: 0 },
+  { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: "power2.out" }
 );
 
 // Animate the entire roadmap glass shell, including its heading and accordion, on scroll.
 gsap.fromTo("#beacon-roadmap-glass-shell",
-  { y: 54, opacity: 0, scale: 0.975, filter: "blur(14px)" },
-  { y: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.05, ease: "power3.out",
+  { y: 54, opacity: 0, scale: 0.975 },
+  { y: 0, opacity: 1, scale: 1, duration: 1.05, ease: "power3.out",
     scrollTrigger: { trigger: "#beacon-roadmap-glass-shell", start: "top 82%", toggleActions: "play none none reverse" } }
 );
 gsap.fromTo("#beacon-roadmap-glass-shell .beacon-roadmap-heading > *",
-  { y: 20, opacity: 0, filter: "blur(6px)" },
-  { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.65, stagger: 0.12, ease: "power2.out",
+  { y: 20, opacity: 0 },
+  { y: 0, opacity: 1, duration: 0.65, stagger: 0.12, ease: "power2.out",
     scrollTrigger: { trigger: "#beacon-roadmap-glass-shell", start: "top 78%", toggleActions: "play none none reverse" } }
 );
 
@@ -4234,8 +4232,8 @@ gsap.fromTo("#beacon-roadmap-glass-shell .beacon-roadmap-heading > *",
 
 // 7. Team Transition
 gsap.fromTo("#team .ta-card",
-  { y: 40, opacity: 0, filter: "blur(12px)" },
-  { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, stagger: 0.08, ease: "power3.out", scrollTrigger: { trigger: "#team", start: "top 65%" } }
+  { y: 40, opacity: 0 },
+  { y: 0, opacity: 1, duration: 0.8, stagger: 0.08, ease: "power3.out", scrollTrigger: { trigger: "#team", start: "top 65%" } }
 );
 
 const taCards = $$('#team .ta-card');
@@ -4252,8 +4250,8 @@ taCards.forEach(card => {
 
 // 8/9. Gallery + Reviews Transition
 gsap.fromTo("#gallery .gr-left, #gallery .gr-right",
-  { y: 35, opacity: 0, filter: "blur(10px)" },
-  { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, stagger: 0.08, ease: "power3.out", scrollTrigger: { trigger: "#gallery", start: "top 65%" } }
+  { y: 35, opacity: 0 },
+  { y: 0, opacity: 1, duration: 0.7, stagger: 0.08, ease: "power3.out", scrollTrigger: { trigger: "#gallery", start: "top 65%" } }
 );
 
 // 10. Contact Transition
@@ -8797,7 +8795,7 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
   try {
     renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   } catch (e) { canvas.remove(); return; }
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.25));   // background layer: ~30% fewer pixels than 1.5, hard to tell apart behind the glass panels
   renderer.outputEncoding = T.sRGBEncoding;
   renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.12;   // filmic: bright sun without clipping the Burj to white
   renderer.setClearColor(0x000000, 0);
@@ -8827,7 +8825,7 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
   // ===== realistic daytime sky (replaces the old gradient) =====
   // HAZE is the colour of the horizon. The sky fades to it, and the edge of the 3D map fades to it too,
   // so the map's edge melts into the horizon instead of showing a hard cut-off.
-  const HAZE = new T.Vector3(0.66, 0.81, 0.97);   // a clear blue haze, so low views read as sky, not grey
+  const HAZE = new T.Vector3(0.70, 0.85, 1.0);   // a bright, clear blue haze, so low views read as sky, not grey
   const SUN_DIR = new T.Vector3(-0.6, 0.5, 0.4).normalize();
   const realSkyMat = () => new T.ShaderMaterial({
     side: T.BackSide, depthWrite: false,
@@ -8836,25 +8834,25 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
     fragmentShader: 'varying vec3 p;uniform float t;uniform vec3 haze;uniform vec3 sunDir;'
       + 'float h(vec2 q){return fract(sin(dot(q,vec2(127.1,311.7)))*43758.5453);}'
       + 'float n(vec2 q){vec2 i=floor(q),f=fract(q);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}'
-      + 'float fbm(vec2 q){float v=0.,a=.5;for(int i=0;i<6;i++){v+=a*n(q);q=q*2.03+vec2(1.7,9.2);a*=.5;}return v;}'
+      // 4 octaves (was 6): the sky is a full-screen shader, so this is the biggest per-frame saving
+      + 'float fbm(vec2 q){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*n(q);q=q*2.03+vec2(1.7,9.2);a*=.5;}return v;}'
       + 'void main(){vec3 d=normalize(p);float y=d.y;float e=max(y,0.);'
-      // sky colour: a narrow pale horizon, clear Dubai blue above it, deeper blue overhead
-      + 'vec3 c=mix(haze,vec3(.46,.68,.95),smoothstep(0.,.11,e));'   // gentle: the map edge (faded to haze) meets the sky without a line
-      + 'c=mix(c,vec3(.16,.38,.78),smoothstep(.06,.65,e));'
+      // bright Dubai daylight: luminous blue near the horizon, clear blue above, deeper blue overhead
+      + 'vec3 c=mix(haze,vec3(.50,.74,1.),smoothstep(0.,.11,e));'   // gentle: the map edge (faded to haze) meets the sky without a line
+      + 'c=mix(c,vec3(.20,.46,.90),smoothstep(.06,.65,e));'
       + 'if(y>.005){'
-      // 1) mid-level fair-weather cumulus: shaped by two noise octaves, lit from the sun side
-      + 'vec2 uv=d.xz/(y+.12)*.9+vec2(t*.004,t*.0015);float a=fbm(uv);float b=fbm(uv*2.1+3.);'
-      + 'float cov=smoothstep(.52,.72,a*.75+b*.25)*smoothstep(.0,.07,y);'   // clouds come down nearer the horizon
-      + 'float sh=clamp((a-fbm(uv+sunDir.xz*.06))*5.+.62,0.,1.);'
-      + 'vec3 cc=mix(vec3(.70,.76,.87),vec3(1.,.99,.97),sh);c=mix(c,cc,cov*.94);'
-      // 2) high thin cirrus streaks, drifting a different way
-      + 'vec2 uv2=d.xz/(y+.05)*.55+vec2(t*.009,-t*.003);float ci=fbm(vec2(uv2.x*3.2,uv2.y*.7));'
-      + 'c=mix(c,vec3(.97,.98,1.),smoothstep(.56,.82,ci)*.32*smoothstep(.06,.45,y));'
-      // 3) a soft band of distant clouds just above the horizon, for depth
-      + 'float hb=smoothstep(.0,.035,y)*(1.-smoothstep(.06,.16,y));'
-      // sampled by horizontal direction (not by angle, which wraps at +-180 degrees and left a hard seam)
+      // 1) fair-weather cumulus, lit from the sun side
+      + 'vec2 uv=d.xz/(y+.12)*.9+vec2(t*.004,t*.0015);float a=fbm(uv);'
+      + 'float cov=smoothstep(.5,.72,a)*smoothstep(.0,.07,y);'
+      + 'if(cov>.001){float sh=clamp((a-fbm(uv+sunDir.xz*.06))*5.+.66,0.,1.);'
+      + 'vec3 cc=mix(vec3(.78,.84,.94),vec3(1.,1.,.99),sh);c=mix(c,cc,cov*.94);}'
+      // 2) high thin cirrus streaks, drifting a different way (only where they can show)
+      + 'if(y>.05){vec2 uv2=d.xz/(y+.05)*.55+vec2(t*.009,-t*.003);float ci=fbm(vec2(uv2.x*3.2,uv2.y*.7));'
+      + 'c=mix(c,vec3(.97,.98,1.),smoothstep(.56,.82,ci)*.32*smoothstep(.06,.45,y));}'
+      // 3) a soft band of distant clouds just above the horizon (sampled by direction: no seam)
+      + 'if(y<.16){float hb=smoothstep(.0,.035,y)*(1.-smoothstep(.06,.16,y));'
       + 'vec2 hd=normalize(d.xz+vec2(1e-5));float hc=smoothstep(.46,.72,fbm(hd*4.5+vec2(y*18.+t*.002,y*3.)));'
-      + 'c=mix(c,vec3(.95,.96,.98),hb*hc*.65);}'
+      + 'c=mix(c,vec3(.96,.97,1.),hb*hc*.6);}}'
       // sun: tight disc, soft glow, and a warm tint of the haze around it
       + 'float sd=max(dot(d,sunDir),0.);float up=smoothstep(0.,.05,e);'
       + 'c+=vec3(1.,.86,.62)*(pow(sd,900.)*2.+pow(sd,60.)*.30+pow(sd,7.)*.10)*up;'
@@ -9484,7 +9482,7 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
 #services .service-card { counter-increment: svc; }
 /* Small index above each title: editorial, easier to scan. Front face is aria-hidden. */
 #services .service-card-title::before {
-  content: counter(svc, decimal-leading-zero);
+  content: none !important;
   display: block;
   margin-bottom: 4px;
   font-size: 11px;
@@ -9975,6 +9973,21 @@ html.nav-menu-open { scrollbar-gutter: stable; }
   });
   sync();
 
+  // Scroll-triggered entrances measure the page once at start-up, but the page keeps growing afterwards
+  // (gallery/folder mount, fonts, section sizing), which left some entrances firing late or never
+  // (e.g. the gallery on phones). Re-measure after load and whenever the page height changes.
+  if (window.ScrollTrigger) {
+    let rt = 0;
+    const refresh = () => { clearTimeout(rt); rt = setTimeout(() => ScrollTrigger.refresh(), 250); };
+    window.addEventListener('load', refresh);
+    document.fonts && document.fonts.ready.then(refresh);
+    const main = document.getElementById('content-wrapper');
+    if (main && window.ResizeObserver) {
+      let lastH = 0;
+      new ResizeObserver(() => { const h = main.offsetHeight; if (Math.abs(h - lastH) > 4) { lastH = h; refresh(); } }).observe(main);
+    }
+  }
+
   // Tax calculator disclaimer (indicative figures only)
   const controls = document.querySelector('#calc .calc-controls');
   if (controls && !document.querySelector('#calc .calc-disclaimer')) {
@@ -9993,7 +10006,7 @@ html.nav-menu-open { scrollbar-gutter: stable; }
 #nav {
   position: fixed !important; top: 12px !important; left: 0 !important; right: 0 !important;
   translate: none !important; transform: none !important;     /* no transform: the menu inside must cover the screen */
-  width: fit-content !important; max-width: calc(100% - 24px); margin-inline: auto !important;
+  width: fit-content !important; max-width: calc(100% - 24px); margin-inline: auto 20px !important;   /* aligned to the right */
   display: flex !important; align-items: center !important; gap: 10px !important;
   height: 54px; padding: 6px 6px 6px 16px !important; border-radius: 999px !important;
   background: transparent !important; border: 0 !important; box-shadow: none !important;
@@ -10050,7 +10063,7 @@ html.nav-menu-open { scrollbar-gutter: stable; }
 }
 #nav .links.on { opacity: 1; visibility: visible; transition: opacity .3s ease, visibility 0s !important; }
 #nav .links a:not(.btn) {
-  counter-increment: navitem; position: relative; display: grid !important; grid-template-columns: 2.4rem 1fr;
+  position: relative; display: grid !important; grid-template-columns: 1fr;
   align-items: baseline; min-height: 0 !important; padding: 14px 14px !important; border-radius: 16px !important;
   font-size: clamp(1.3rem, 2.2vw, 1.75rem) !important; font-weight: 800; letter-spacing: -.02em; line-height: 1.15;
   color: #004aad; white-space: normal !important; background: transparent;
@@ -10061,11 +10074,9 @@ html.nav-menu-open { scrollbar-gutter: stable; }
 #nav .links.on a:nth-child(4) { transition-delay: .09s; } #nav .links.on a:nth-child(5) { transition-delay: .12s; }
 #nav .links.on a:nth-child(6) { transition-delay: .15s; } #nav .links.on a:nth-child(7) { transition-delay: .18s; }
 #nav .links.on a:nth-child(8) { transition-delay: .21s; } #nav .links.on a:nth-child(9) { transition-delay: .24s; }
-#nav .links a:not(.btn)::before {
-  content: counter(navitem, decimal-leading-zero); font-size: .75rem; font-weight: 700; letter-spacing: .1em; color: #b45309;
-}
+
 #nav .links a:not(.btn) small {
-  grid-column: 2; display: block; margin-top: 4px; font-size: .86rem; font-weight: 500; letter-spacing: 0; color: rgba(0,55,125,.72);
+  grid-column: 1; display: block; margin-top: 4px; font-size: .86rem; font-weight: 500; letter-spacing: 0; color: rgba(0,55,125,.72);
 }
 #nav .links a:not(.btn):hover, #nav .links a:not(.btn):focus-visible { background: rgba(255,255,255,.7); outline: none; }
 #nav .links a:not(.btn):focus-visible { box-shadow: 0 0 0 2px #004aad; }
