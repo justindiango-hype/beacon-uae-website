@@ -5,12 +5,87 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BEACON UAE | Business Setup, Visas, PRO and Tax in Dubai</title>
 <meta name="description" content="BEACON helps entrepreneurs and companies assess setup options, licensing, visas, PRO, accounting and corporate tax compliance in Dubai.">
+<meta name="keywords" content="business setup Dubai, company formation UAE, Dubai company registration, Free Zone company setup, Dubai Mainland trade licence, UAE residency visa, Golden Visa UAE, PRO services Dubai, corporate bank account UAE, UAE corporate tax, VAT registration UAE, business consultancy Dubai">
+<meta name="author" content="Al Manal BEACON LLC">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#004aad">
+<link rel="canonical" href="https://beaconuae.com/">
 <meta property="og:title" content="BEACON UAE | Business Setup in Dubai">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="BEACON UAE">
+<meta property="og:locale" content="en_AE">
+<meta property="og:url" content="https://beaconuae.com/">
+<meta property="og:description" content="Company formation, Free Zone and Mainland licensing, visas, PRO services, corporate banking and corporate tax advisory in Dubai, guided by founder Kinga Szabo.">
+<meta property="og:image" content="https://beaconuae.com/assets/kingahero.webp">
+<meta property="og:image:alt" content="Kinga Szabo, Founder and CEO of BEACON UAE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BEACON UAE | Business Setup in Dubai">
+<meta name="twitter:description" content="Company formation, licensing, visas, PRO, banking and corporate tax advisory in Dubai.">
+<meta name="twitter:image" content="https://beaconuae.com/assets/kingahero.webp">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "ProfessionalService",
+ "name": "BEACON UAE",
+ "legalName": "Al Manal BEACON LLC",
+ "description": "Business setup, company formation, visas, PRO services, corporate banking and corporate tax advisory in Dubai and across the UAE.",
+ "url": "https://beaconuae.com/",
+ "logo": "https://beaconuae.com/assets/logo.png",
+ "image": "https://beaconuae.com/assets/kingahero.webp",
+ "email": "info@beaconuae.com",
+ "telephone": "+971547775023",
+ "foundingDate": "2014",
+ "address": {
+  "@type": "PostalAddress",
+  "streetAddress": "Office 1006, Al Amal Street, Business Bay",
+  "addressLocality": "Dubai",
+  "addressCountry": "AE"
+ },
+ "openingHoursSpecification": [
+  {
+   "@type": "OpeningHoursSpecification",
+   "dayOfWeek": [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday"
+   ],
+   "opens": "09:00",
+   "closes": "18:00"
+  }
+ ],
+ "areaServed": {
+  "@type": "Country",
+  "name": "United Arab Emirates"
+ },
+ "founder": {
+  "@type": "Person",
+  "name": "Kinga Szabo",
+  "jobTitle": "Founder & CEO"
+ },
+ "sameAs": [
+  "https://www.instagram.com/beacon_uae/",
+  "https://www.facebook.com/uaebeacon"
+ ],
+ "knowsAbout": [
+  "Company formation in Dubai",
+  "UAE Free Zone company setup",
+  "Dubai Mainland trade licence",
+  "UAE residency visas",
+  "Golden Visa",
+  "PRO services",
+  "Corporate bank accounts in the UAE",
+  "UAE corporate tax",
+  "VAT registration",
+  "Trademark registration"
+ ]
+}
+</script>
 <link rel="icon" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <!-- React and ReactDOM for the GhostFibers Component -->
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -26,6 +101,8 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
 <script>if (window.THREE) document.documentElement.dataset.bg3d = "1";</script>
+<script>/* landmark artwork is only shown when the 3D scene is off, so only then is it downloaded */
+document.addEventListener("DOMContentLoaded",()=>{if(!document.documentElement.dataset.bg3d)document.querySelectorAll("img.landmark-art[data-src]").forEach(i=>{i.src=i.dataset.src;});});</script>
 
 <style>
 @property --a { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
@@ -55,7 +132,7 @@ html {
   height: 100%;
 }
 body {
-  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-family: Montserrat, system-ui, -apple-system, sans-serif;
   background: transparent;
   color: var(--blue);
   line-height: 1.5;
@@ -140,7 +217,7 @@ nav::after { right: -24px; background: radial-gradient(circle at 100% 100%, tran
   --pad: 12px 26px; position: relative; isolation: isolate;
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   padding: var(--pad); border: 0; border-radius: 14px;
-  background: var(--orange); color: #fff; font: 600 0.94rem Inter, sans-serif;
+  background: var(--orange); color: #fff; font: 600 0.94rem Montserrat, sans-serif;
   cursor: pointer; min-height: 46px;
   transition: transform 0.25s var(--spring), box-shadow 0.25s var(--ease);
   box-shadow: 0 10px 24px rgba(255, 117, 31, 0.28);
@@ -710,7 +787,7 @@ select:focus { outline: none; border-color: var(--orange); }
   padding: 20px 16px; border-radius: var(--r); color: var(--blue);
   background: rgba(246, 248, 252, 0.9); border: 1px dashed var(--line);
 }
-.gb { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--blue); font: 800 1.5rem Inter, sans-serif; margin-bottom: 10px; box-shadow: 0 6px 14px rgba(0, 74, 173, 0.05); }
+.gb { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--blue); font: 800 1.5rem Montserrat, sans-serif; margin-bottom: 10px; box-shadow: 0 6px 14px rgba(0, 74, 173, 0.05); }
 .rcta h3 { font-size: 1.05rem; color: var(--blue); margin: 0 0 4px 0; }
 .rcta p { font-size: 0.78rem; color: var(--soft); margin: 0 0 14px 0; line-height: 1.35; }
 
@@ -1186,7 +1263,7 @@ select:focus { outline: none; border-color: var(--orange); }
   justify-content: center;
   padding: 0 18px;
   color: #fff;
-  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-family: Montserrat, system-ui, -apple-system, sans-serif;
   font-size: clamp(16px, 2.1vw, 27px);
   font-weight: 700;
   letter-spacing: .015em;
@@ -2312,7 +2389,7 @@ select:focus { outline: none; border-color: var(--orange); }
 </style>
 
 
-<style id="beacon-service-cards-refresh">
+<style id="beacon-service-cards-refresh-2">
 /* Services: static photo cards with a deep-blue gradient and white typography */
 #services { overflow: visible; }
 #services .wrap { width: min(1240px, calc(100% - 48px)); max-width: 1240px; }
@@ -2870,7 +2947,7 @@ select:focus { outline: none; border-color: var(--orange); }
 #hero #hero-heading {
   max-width: 100%;
   text-align: left;
-  font-size: clamp(2.15rem, 3.65vw, 3.45rem);
+  font-size: clamp(2rem, 3.3vw, 3.15rem);   /* Montserrat is wider than Inter: keeps the approved 4-line headline */
   line-height: 1.06;
   letter-spacing: -0.035em;
 }
@@ -3156,7 +3233,7 @@ select:focus { outline: none; border-color: var(--orange); }
 
 <!-- 1. TAX CALCULATOR: Calculator Left, Burj Khalifa on the Right -->
 <section id="calc" class="snap-section">
-  <img src="assets/landmark/1.webp" class="landmark-art landmark-khalifa" alt="" aria-hidden="true" loading="lazy" decoding="async">
+  <img data-src="assets/landmark/1.webp" class="landmark-art landmark-khalifa" alt="" aria-hidden="true" decoding="async">
   <div class="wrap">
     <div class="calc-left-wrapper">
       <div class="wh" style="margin-bottom: 16px;">
@@ -3234,7 +3311,7 @@ select:focus { outline: none; border-color: var(--orange); }
 
 <!-- 2. ABOUT SECTION: CEO on Left, Burj Al Arab on the Right -->
 <section id="about" class="snap-section mw">
-  <img src="assets/landmark/2.webp" class="landmark-art landmark-burj-al-arab" alt="" aria-hidden="true" loading="lazy" decoding="async">
+  <img data-src="assets/landmark/2.webp" class="landmark-art landmark-burj-al-arab" alt="" aria-hidden="true" decoding="async">
   <div class="wrap">
     <div class="about-left-wrapper">
       <figure class="abp">
@@ -3269,7 +3346,7 @@ select:focus { outline: none; border-color: var(--orange); }
 
 <!-- 3. WHY UAE: Emirates Towers on Left, Cards on the Right (Scatter-Cluster Bloom Reveal) -->
 <section id="why" class="snap-section">
-  <img src="assets/landmark/3.webp" class="landmark-art landmark-emirates-towers" alt="" aria-hidden="true" loading="lazy" decoding="async">
+  <img data-src="assets/landmark/3.webp" class="landmark-art landmark-emirates-towers" alt="" aria-hidden="true" decoding="async">
   <div class="wrap">
     <div class="why-right-wrapper">
       <div class="wh">
@@ -3340,7 +3417,7 @@ select:focus { outline: none; border-color: var(--orange); }
 
 <!-- 5. PACKAGES: Dedicated Section with Dubai Frame on Right & Packages on Left -->
 <section id="packages" class="snap-section mw">
-  <img src="assets/landmark/5.webp" class="landmark-art landmark-dubai-frame" alt="" aria-hidden="true" loading="lazy" decoding="async">
+  <img data-src="assets/landmark/5.webp" class="landmark-art landmark-dubai-frame" alt="" aria-hidden="true" decoding="async">
   <div class="wrap">
     <div class="packages-left-wrapper">
       <div class="wh">
@@ -3647,27 +3724,71 @@ select:focus { outline: none; border-color: var(--orange); }
       </div>
     </div>
 
-    <!-- Integrated Presentation Finish Bar -->
-    <div class="contact-footer-bar">
-      <div class="cf-brand">
-        <b>BEACON</b>
-        <span>UAE Formation, Licensing &amp; Corporate Tax Advisory</span>
-      </div>
-      <div class="cf-links">
-        <a href="#about">About</a>
-        <a href="#calc">Calculator</a>
-        <a href="#why">Why UAE</a>
-        <a href="#services">Services</a>
-        <a href="#packages">Packages</a>
-        <a href="#how">How It Works</a>
-      </div>
-      <div class="cf-copy">
-        © <span id="yr"></span> BEACON UAE. All rights reserved.
-      </div>
-    </div>
   </div>
 </section>
 </main>
+
+<footer id="site-footer" class="site-footer" aria-labelledby="footer-title">
+  <h2 id="footer-title" class="visually-hidden">BEACON UAE contact details and site links</h2>
+  <div class="sf-inner">
+    <div class="sf-reach" role="list">
+      <a class="sf-card" role="listitem" href="https://wa.me/971547775023" target="_blank" rel="noopener">
+        <span class="sf-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg></span>
+        <span><b>Chat on WhatsApp</b><small>+971 54 777 5023</small></span>
+      </a>
+      <a class="sf-card" role="listitem" href="https://beaconuae.zohobookings.com/#/ceo-online-meeting" target="_blank" rel="noopener">
+        <span class="sf-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span>
+        <span><b>Book a CEO consultation</b><small>Online meeting with Kinga Szabo</small></span>
+      </a>
+      <a class="sf-card" role="listitem" href="https://maps.app.goo.gl/wdTs3M28hHg5J9Kt6" target="_blank" rel="noopener">
+        <span class="sf-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+        <span><b>Visit our office</b><small>Business Bay, Dubai</small></span>
+      </a>
+    </div>
+
+    <div class="sf-grid">
+      <div class="sf-col sf-brand">
+        <img src="assets/logo.png" alt="BEACON UAE" width="120" height="34">
+        <p>Business setup, visas, PRO services and corporate tax advisory for entrepreneurs expanding into the UAE.</p>
+        <p class="sf-rating"><span aria-hidden="true">★★★★★</span> 4.8 from 55 Google reviews</p>
+        <div class="sf-social">
+          <a href="https://www.instagram.com/beacon_uae/" target="_blank" rel="noopener" aria-label="BEACON UAE on Instagram"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg></a>
+          <a href="https://www.facebook.com/uaebeacon" target="_blank" rel="noopener" aria-label="BEACON UAE on Facebook"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg></a>
+        </div>
+      </div>
+      <div class="sf-col" role="navigation" aria-label="Footer">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="#calc">Tax Calculator</a></li><li><a href="#about">About</a></li><li><a href="#why">Why UAE</a></li>
+          <li><a href="#services">Services</a></li><li><a href="#packages">Packages</a></li><li><a href="#how">How It Works</a></li>
+          <li><a href="#team">Team</a></li><li><a href="#gallery">Gallery &amp; Reviews</a></li><li><a href="#location">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="sf-col">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="#services">Company Registration</a></li><li><a href="#services">Visa Processing</a></li>
+          <li><a href="#services">Corporate Banking</a></li><li><a href="#services">Accounting &amp; Tax</a></li>
+          <li><a href="#services">Intellectual Property</a></li><li><a href="#services">Personal Documentation</a></li>
+          <li><a href="#services">Market Research</a></li><li><a href="#services">Feasibility Studies</a></li>
+        </ul>
+      </div>
+      <div class="sf-col">
+        <h3>Contact</h3>
+        <address>
+          <p>Al Manal BEACON LLC<br>Office 1006, Al Amal Street<br>Business Bay, Dubai<br>United Arab Emirates</p>
+          <p><a href="tel:+971547775023">+971 54 777 5023</a><br><a href="mailto:info@beaconuae.com">info@beaconuae.com</a></p>
+          <p>Weekdays, 9:00 AM – 6:00 PM</p>
+        </address>
+      </div>
+    </div>
+
+    <div class="sf-legal">
+      <span>© <span id="yr"></span> Al Manal BEACON LLC. All rights reserved.</span>
+      <span class="sf-legal-links"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></span>
+    </div>
+  </div>
+</footer>
 
 <a class="wa-float" href="https://wa.me/971547775023" target="_blank" rel="noopener" aria-label="Chat with BEACON on WhatsApp">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -3932,11 +4053,6 @@ packTl.fromTo(".landmark-dubai-frame",
   { y: 20, opacity: 0, filter: "blur(8px)" },
   { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.5, stagger: 0.08, ease: "power2.out" },
   "-=0.7"
-)
-.fromTo("#packages-folder-root .folder-root",
-  { y: 40, opacity: 0, scale: 0.95, filter: "blur(12px)" },
-  { y: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.7, stagger: 0.12, ease: "power3.out" },
-  "-=0.5"
 );
 
 // 6. How It Works Transition
@@ -3946,16 +4062,6 @@ const howTl = gsap.timeline({
 howTl.fromTo("#how .wh > *",
   { y: 20, opacity: 0, filter: "blur(8px)" },
   { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.5, stagger: 0.08, ease: "power2.out" }
-)
-.fromTo("#how .hw",
-  { "--lp": 0 },
-  { "--lp": 1, duration: 1.1, ease: "power2.inOut" },
-  "-=0.2"
-)
-.fromTo("#how .hs",
-  { scale: 0.82, opacity: 0, y: 24, filter: "blur(10px)" },
-  { scale: 1, opacity: 1, y: 0, filter: "blur(0px)", duration: 0.55, stagger: 0.1, ease: "back.out(1.4)" },
-  "-=0.9"
 );
 
 // Animate the entire roadmap glass shell, including its heading and accordion, on scroll.
@@ -3969,11 +4075,7 @@ gsap.fromTo("#beacon-roadmap-glass-shell .beacon-roadmap-heading > *",
   { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.65, stagger: 0.12, ease: "power2.out",
     scrollTrigger: { trigger: "#beacon-roadmap-glass-shell", start: "top 78%", toggleActions: "play none none reverse" } }
 );
-gsap.fromTo("#beacon-roadmap-gallery .br-card",
-  { y: 28, opacity: 0, scale: 0.97 },
-  { y: 0, opacity: 1, scale: 1, duration: 0.65, stagger: 0.09, ease: "power3.out",
-    scrollTrigger: { trigger: "#beacon-roadmap-glass-shell", start: "top 75%", toggleActions: "play none none reverse" } }
-);
+
 
 // ===== Skyline: black-and-white towers drift behind the page; each landmark "wakes up" in its section =====
 (() => {
@@ -4155,18 +4257,7 @@ gsap.fromTo("#gallery .gr-left, #gallery .gr-right",
 );
 
 // 10. Contact Transition
-gsap.fromTo("#contact .two > div:first-child",
-  { x: -50, opacity: 0, filter: "blur(12px)" },
-  { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: "#contact", start: "top 65%" } }
-);
-gsap.fromTo("#contact .glass-box",
-  { x: 50, opacity: 0, filter: "blur(12px)" },
-  { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: "#contact", start: "top 65%" } }
-);
-gsap.fromTo("#contact .contact-footer-bar",
-  { y: 20, opacity: 0, filter: "blur(8px)" },
-  { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.6, ease: "power2.out", delay: 0.2, scrollTrigger: { trigger: "#contact", start: "top 65%" } }
-);
+
 
 // Hero phrase rotation: softly blur out, then blur in at the same position.
 const rollerItems = Array.from(document.querySelectorAll(".roller-item"));
@@ -7664,7 +7755,7 @@ const StackGallery = ({ images, visible = 4, spread = 0.5, depth = 0.5, threshol
             onClick={() => onCardClick(imageIndex)}
           >
             <div className="stack-gallery-card-face">
-              <img src={images[imageIndex]} alt={`Gallery photo ${imageIndex + 1}`} draggable={false}
+              <img src={images[imageIndex]} alt={(typeof GALLERY_ALTS !== 'undefined' && GALLERY_ALTS[imageIndex]) || `BEACON gallery photo ${imageIndex + 1}`} draggable={false}
                 loading={position < visible ? 'eager' : 'lazy'} />
             </div>
           </div>
@@ -7675,6 +7766,7 @@ const StackGallery = ({ images, visible = 4, spread = 0.5, depth = 0.5, threshol
 };
 
 const galleryItems = Array.from({ length: 36 }, (_, i) => `assets/gallery/photo${i + 1}.jpg`);
+const GALLERY_ALTS = ["Client consultation at the BEACON office in Dubai", "A client checks details on his phone during a meeting with a BEACON advisor", "Clients with the BEACON team after a visa appointment", "A client at a UAE residency visa medical test", "Clients at a Dubai government service centre during visa processing", "Three clients smiling at a Dubai government service centre", "Two BEACON advisors in a meeting room overlooking Dubai", "A business setup consultation over coffee", "A client listening during a business setup meeting", "A client in discussion with a BEACON advisor", "Guests at a BEACON business seminar", "A BEACON advisor meets a client in a glass-walled meeting room", "A client during a company formation consultation", "A client in a meeting with a BEACON advisor", "A client and advisor review plans on a laptop", "A client meeting with a BEACON advisor in the office", "Kinga Szabo, BEACON founder, at a client meeting", "Two clients talking during a meeting", "A client meeting in a bright Dubai office", "A BEACON advisor at the meeting table", "A client and advisor in conversation at a meeting table", "A warm welcome between a client and a BEACON team member", "Kinga Szabo speaking on a business podcast", "A BEACON advisor smiling during an interview", "Guests at a Dubai business networking event", "Kinga Szabo with a guest at a business event in Dubai", "A guest speaking on a business podcast", "A client at a meeting in Dubai", "Kinga Szabo with a guest at an event", "A client listening during a consultation", "Guests at a business lunch", "A client checks his phone during a meeting", "A smiling client during a consultation", "Kinga Szabo on a business podcast", "Kinga Szabo with a guest at an event", "Kinga Szabo with a guest at an event"];
 const mount = document.getElementById('depth-carousel-root');
 if (mount) {
   ReactDOM.createRoot(mount).render(
@@ -8436,7 +8528,7 @@ body { height: auto; min-height: 100%; }
 #location .loc-map .location-actions { margin-top: 0; }
 
 #location .loc-chat {
-  --chat-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", Inter, system-ui, sans-serif;
+  --chat-font: Montserrat, system-ui, -apple-system, sans-serif;
   font-family: var(--chat-font);
   display: flex; flex-direction: column; min-height: 0; overflow: hidden;
   border-radius: 28px; background: rgba(255,255,255,.76); border: 1px solid rgba(255,255,255,.95);
@@ -8470,7 +8562,7 @@ body { height: auto; min-height: 100%; }
 .chat-suggest:empty { display: none; }
 .chat-chip {
   position: relative; border: 1px solid rgba(0,74,173,.22); background: rgba(255,255,255,.88); color: var(--blue);
-  font: 500 .82rem/1.2 var(--chat-font, -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif);
+  font: 500 .82rem/1.2 var(--chat-font, -apple-system, BlinkMacSystemFont, "SF Pro Text", Montserrat, system-ui, sans-serif);
   padding: 8px 13px; border-radius: 999px; cursor: pointer; text-align: left; transition: background .2s ease, opacity .25s ease; animation: chatIn .35s ease both;
 }
 .chat-chip:hover { background: rgba(0,74,173,.06); }
@@ -8479,7 +8571,7 @@ body { height: auto; min-height: 100%; }
 .chat-input { padding: 8px 14px 14px; border-top: 1px solid rgba(60,60,67,.1); background: rgba(255,255,255,.5); }
 .chat-pill { display: flex; align-items: center; gap: 6px; padding: 4px 4px 4px 16px; border: 1px solid rgba(60,60,67,.22); border-radius: 999px; background: rgba(255,255,255,.95); transition: border-color .2s ease; }
 .chat-pill:focus-within { border-color: var(--blue); }
-.chat-pill input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: 400 .95rem var(--chat-font, -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif); color: #1c1c1e; height: 34px; }
+.chat-pill input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: 400 .95rem var(--chat-font, -apple-system, BlinkMacSystemFont, "SF Pro Text", Montserrat, system-ui, sans-serif); color: #1c1c1e; height: 34px; }
 .chat-pill input::placeholder { color: #8e8e93; }
 .chat-pill button { width: 32px; height: 32px; flex: 0 0 32px; border: 0; border-radius: 50%; display: grid; place-items: center; color: #fff; background: linear-gradient(180deg, #1a6cf0, #004AAD); cursor: pointer; transition: opacity .2s ease, transform .15s ease; }
 .chat-pill button:disabled { opacity: .3; cursor: default; }
@@ -9994,7 +10086,7 @@ html.nav-menu-open .slide-nav, html.nav-menu-open .wa-float { opacity: 0 !import
   content: attr(title); position: absolute; right: calc(100% + 12px); top: 50%; transform: translate(6px, -50%);
   padding: 5px 10px; border-radius: 999px; white-space: nowrap; pointer-events: none;
   background: rgba(255,255,255,.88); box-shadow: 0 6px 18px rgba(0,55,125,.14);
-  font: 700 .74rem/1.2 Inter, system-ui, sans-serif; color: #004aad;
+  font: 700 .74rem/1.2 Montserrat, system-ui, sans-serif; color: #004aad;
   opacity: 0; transition: opacity .2s ease, transform .2s ease;
 }
 .slide-dot:hover::after, .slide-dot:focus-visible::after { opacity: 1; transform: translate(0, -50%); }
@@ -10015,6 +10107,62 @@ html.nav-menu-open .slide-nav, html.nav-menu-open .wa-float { opacity: 0 !import
   #nav .links, #nav .links a:not(.btn), #nav .nav-section { transition: none !important; }
   #nav .links a:not(.btn) { transform: none; opacity: 1; }
 }
+</style>
+
+<style id="beacon-site-footer">
+/* Footer: three ways to reach BEACON, four information columns, legal line. Same glass as the section panels. */
+.site-footer { position: relative; z-index: 1; padding: 8px 0 0; }
+.site-footer .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.sf-inner {   /* full-width band that closes the page; content stays in the 1160px column */
+  width: 100%; margin: 0; display: grid; gap: 28px;
+  padding: clamp(28px, 3.4vw, 44px) max(24px, calc((100% - 1160px) / 2)) 26px;
+  border-radius: 32px 32px 0 0; border: 1px solid rgba(255,255,255,.72); border-bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.80), rgba(255,255,255,.58));
+  box-shadow: 0 22px 64px rgba(0,55,125,.11), inset 0 1px 0 rgba(255,255,255,.9);
+  -webkit-backdrop-filter: blur(22px) saturate(145%); backdrop-filter: blur(22px) saturate(145%);
+  color: rgba(0,55,125,.82);
+}
+.sf-reach { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.sf-card {
+  display: flex; align-items: center; gap: 14px; min-height: 76px; padding: 14px 18px; border-radius: 18px;
+  background: rgba(255,255,255,.72); border: 1px solid rgba(0,74,173,.10); color: #004aad;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.sf-card:hover, .sf-card:focus-visible { transform: translateY(-2px); border-color: rgba(245,129,30,.55); box-shadow: 0 12px 28px rgba(0,55,125,.12); }
+.sf-card b { display: block; font-size: 1rem; font-weight: 700; }
+.sf-card small { display: block; margin-top: 2px; font-size: .84rem; color: rgba(0,55,125,.72); }
+.sf-ico { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #F5811E; color: #fff; }
+.sf-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.15fr; gap: 28px; padding-top: 26px; border-top: 1px solid rgba(0,74,173,.10); }
+.sf-col h3 { margin: 0 0 12px; font-size: .74rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #b45309; }
+.sf-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.sf-col ul a, .sf-legal a, .sf-col address a { display: inline-block; min-height: 24px; padding: 3px 0; }   /* 24px minimum target size */
+.sf-col a { color: #004aad; font-size: .92rem; }
+.sf-col a:hover, .sf-col a:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+.sf-col address { font-style: normal; display: grid; gap: 10px; font-size: .92rem; line-height: 1.55; }
+.sf-col address p { margin: 0; }
+.sf-brand img { height: 34px; width: auto; margin-bottom: 12px; }
+.sf-brand p { margin: 0 0 10px; font-size: .92rem; line-height: 1.55; max-width: 34ch; }
+.sf-rating { font-weight: 600; color: #004aad; }
+.sf-rating span { color: #FBBC05; letter-spacing: 1px; margin-right: 4px; }
+.sf-social { display: flex; gap: 8px; margin-top: 4px; }
+.sf-social a { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: rgba(0,74,173,.08); color: #004aad; transition: background .2s ease, color .2s ease; }
+.sf-social a:hover, .sf-social a:focus-visible { background: #004aad; color: #fff; text-decoration: none; }
+.sf-legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 20px; padding-top: 18px; border-top: 1px solid rgba(0,74,173,.10); font-size: .82rem; }
+.sf-legal-links { display: flex; gap: 18px; }
+.sf-legal a { color: #004aad; }
+.sf-legal a:hover, .sf-legal a:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+/* the Contact section no longer holds a footer bar */
+#contact > .wrap { height: auto !important; max-height: none !important; justify-content: center !important; }
+@media (max-width: 1023px) {
+  .sf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .sf-inner { padding: 24px 18px 96px; border-radius: 24px 24px 0 0; gap: 22px; }   /* bottom space clears the WhatsApp button */
+  .sf-reach { grid-template-columns: minmax(0, 1fr); }
+  .sf-grid { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .sf-legal { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) { .sf-card { transition: none; } }
 </style>
 
 <script id="beacon-nav-pill-js">
