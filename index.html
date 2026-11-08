@@ -9591,5 +9591,46 @@ html.nav-menu-open { scrollbar-gutter: stable; }
 })();
 </script>
 
+<!-- Site-wide polish: section geometry, heading scale, label contrast and reviews pause.
+     The hero is excluded throughout. -->
+<style id="beacon-site-polish">
+/* 1. Section geometry. Sections start under the 76px nav offset, so a full-viewport section
+      always had its bottom 76px off-screen and its centred panel sat low. Non-hero sections now
+      fill exactly the visible area under the nav. */
+@media (min-width: 1024px) {
+  .snap-section:not(#hero) {
+    min-height: calc(100dvh - 76px) !important;
+    padding-top: 22px !important;
+    padding-bottom: 22px !important;
+  }
+}
+@media (max-width: 1023px) {
+  /* phones/tablets: let sections size to their content instead of forcing a full screen */
+  .snap-section:not(#hero) {
+    min-height: 0 !important;
+    padding-top: 28px !important;
+    padding-bottom: 28px !important;
+  }
+}
+
+/* 2. One heading scale for section titles (Contact keeps its larger closing headline) */
+#calc .wh h2, #about .stagger-abt h2, #team .wh h2, #gallery .wh h2, #location .location-heading h2 {
+  font-size: clamp(1.75rem, 2.6vw, 2.45rem) !important;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+/* 3. Small orange labels: darker orange text for 4.5:1 contrast; the brand-orange dot stays */
+.snap-section:not(#hero) .eb,
+#how .train-step-eyebrow,
+.beacon-roadmap .beacon-roadmap-kicker,
+#contact .beacon-cta4-eyebrow,
+#team .ta-role { color: #b45309 !important; }
+
+/* 4. Reviews ticker also pauses for keyboard users */
+.rv-viewport:focus-within .rv-track { animation-play-state: paused; }
+</style>
+
+
 </body>
 </html>
