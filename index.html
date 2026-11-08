@@ -24,6 +24,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
 <script>if (window.THREE) document.documentElement.dataset.bg3d = "1";</script>
 
 <style>
@@ -8837,7 +8838,8 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
   beacon.position.set(0, 100.5, 0);
 
   // ===== real Downtown Dubai model (if it can't load, the built-in tower above stays) =====
-  const MODELS = ['assets/burj_khalifa_web.glb', 'burj_khalifa_web.glb'];   // tries assets/ first, then the same folder as this html
+  // Enhanced Dubai city (Draco-compressed) first; the original model is the fallback if Draco or the file is unavailable.
+  const MODELS = ['assets/dubai_city_enhanced.glb', 'assets/burj_khalifa_web.glb', 'burj_khalifa_web.glb'];
   const CX = 347.5, CZ = -345.7, GROUND = 31.2, S = 100 / 828; // tower axis + ground level in the model, scaled so the spire is 100 tall
   const onModel = gltf => {
     const m = gltf.scene;
@@ -8929,12 +8931,43 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
         mt.onBeforeCompile = hazeShader; mt.needsUpdate = true;
       });
     });
+    // ===== enhanced city: sunlit curtain-wall glass, static sun shadows on desktop =====
+    // The scene has no environment map once the model loads, so metallic glass would render near-black;
+    // a low metalness lets the sun light the blue curtain-wall texture and gives it a soft specular sheen.
+    m.traverse(o => {
+      if (!o.isMesh) return;
+      if (o.material.name === 'City_Glass') { o.material.metalness = 0.15; o.material.roughness = 0.28; }
+      if (o.material.name === 'City_Metal') { o.material.metalness = 0.2; o.material.roughness = 0.4; }
+    });
+    if (window.matchMedia('(min-width: 900px)').matches) {
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = T.PCFSoftShadowMap;
+      renderer.shadowMap.autoUpdate = false;           // the city and sun never move: render the shadow map once
+      key.castShadow = true;
+      key.position.set(-60, 50, 40).multiplyScalar(4);   // same sun direction, far enough to cover the map
+      key.shadow.mapSize.set(2048, 2048);
+      key.shadow.bias = -0.0004; key.shadow.normalBias = 0.04;
+      const sc = key.shadow.camera;
+      sc.left = -240; sc.right = 240; sc.top = 240; sc.bottom = -240; sc.near = 10; sc.far = 800;
+      sc.updateProjectionMatrix();
+      m.traverse(o => { if (o.isMesh) { o.castShadow = o.name !== 'Terrain'; o.receiveShadow = true; } });
+      renderer.shadowMap.needsUpdate = true;
+    }
     kick();
   };
-  const loadModel = i => new T.GLTFLoader().load(MODELS[i], onModel, undefined, e => {
-    if (i + 1 < MODELS.length) loadModel(i + 1);
-    else console.warn('Burj Khalifa model not loaded, using the built-in tower:', e);
-  });
+  let draco = null;
+  if (T.DRACOLoader) {
+    draco = new T.DRACOLoader();
+    draco.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
+  }
+  const loadModel = i => {
+    const loader = new T.GLTFLoader();
+    if (draco) loader.setDRACOLoader(draco);
+    loader.load(MODELS[i], onModel, undefined, e => {
+      if (i + 1 < MODELS.length) loadModel(i + 1);
+      else console.warn('Burj Khalifa model not loaded, using the built-in tower:', e);
+    });
+  };
   if (T.GLTFLoader) loadModel(0);
   else console.warn('GLTFLoader did not load, using the built-in tower.');
 
