@@ -7523,7 +7523,21 @@ if (packageFolderMount) {
     }
   ];
 
-  ReactDOM.createRoot(packageFolderMount).render(
+  // Folder scale follows the viewport so the folder and its papers stay inside
+  // the Packages panel. Size is read live by the folder engine, so a resize does
+  // not replay the intro. (CSS transform scaling would break its hit-testing.)
+  const packageFolderSize = () => {
+    const w = window.innerWidth;
+    return w <= 600 ? 1.15 : w < 1100 ? 1.6 : 1.7;
+  };
+  const PackagesFolder = () => {
+    const [size, setSize] = React.useState(packageFolderSize);
+    React.useEffect(() => {
+      const onResize = () => setSize(packageFolderSize());
+      window.addEventListener('resize', onResize, { passive: true });
+      return () => window.removeEventListener('resize', onResize);
+    }, []);
+    return (
     <Folder
       label="BEACON"
       items={packageFolderItems}
@@ -7531,7 +7545,7 @@ if (packageFolderMount) {
       variant="solid"
       color="#004aad"
       paperColor="#ffffff"
-      size={1.9}
+      size={size}
       theme="light"
       openOn="click"
       draggable={false}
@@ -7542,7 +7556,10 @@ if (packageFolderMount) {
       bounce={0.35}
       speed={1}
     />
-  );
+    );
+  };
+
+  ReactDOM.createRoot(packageFolderMount).render(<PackagesFolder />);
 }
 
 const StackGallery = ({ images, visible = 4, spread = 0.5, depth = 0.5, threshold = 90 }) => {
@@ -9177,6 +9194,159 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
       width: calc(100% - 28px) !important;
     }
   }
+</style>
+
+<!-- Four-section refinement: compact Services, Packages spacing, right-aligned Why UAE,
+     glass Execution Roadmap. Loaded last so it wins over the earlier patch blocks. -->
+<style id="beacon-four-section-refinement">
+/* ---------- 1. SERVICES: compact bento ---------- */
+#services .wrap > .wh .eb { margin-bottom: 10px; }
+#services .wrap > .wh h2 {
+  font-size: clamp(1.7rem, 2.5vw, 2.4rem) !important;
+  max-width: 30ch;
+  margin-inline: auto;
+  text-align: center;
+}
+#services .wrap > .wh .lead {
+  max-width: 64ch;
+  margin-top: 8px;
+  font-size: clamp(.9rem, 1vw, 1rem);
+  text-align: center;
+}
+#services .services-list-container {
+  counter-reset: svc;
+  margin-top: clamp(18px, 2.4vh, 24px) !important;
+}
+#services .service-card { counter-increment: svc; }
+/* Small index above each title: editorial, easier to scan. Front face is aria-hidden. */
+#services .service-card-title::before {
+  content: counter(svc, decimal-leading-zero);
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  color: rgba(255,255,255,.78);
+}
+#services .service-card-title { font-size: 15px !important; font-weight: 700 !important; }
+#services .service-card--featured .service-card-title { font-size: clamp(20px, 1.9vw, 26px) !important; }
+#services .service-card-front,
+#services .service-card--featured .service-card-front { padding: 4px !important; }
+#services .service-card-content { padding: 14px 16px !important; }
+#services .service-card-back { padding: 12px 14px !important; }
+
+@media (min-width: 1001px) {
+  #services .services-list-container {
+    grid-auto-rows: clamp(120px, 14.6vh, 146px) !important;
+    max-width: 1084px;
+  }
+  #services .wrap { padding-block: 28px !important; }
+}
+@media (min-width: 601px) and (max-width: 1000px) {
+  #services .services-list-container { grid-auto-rows: 150px !important; }
+}
+@media (max-width: 600px) {
+  /* One column of compact photo strips. The featured card used to be 285px tall
+     inside a 205px grid row, which made it overlap the next card. */
+  #services .services-list-container {
+    grid-template-rows: 180px !important;
+    grid-auto-rows: 136px !important;
+    gap: 10px !important;
+  }
+  #services .service-card--featured { height: 100% !important; }
+  #services .service-card--featured .service-card-title { font-size: 20px !important; }
+  #services .service-card:not(.service-card--featured) .service-card-description { font-size: 12px !important; }
+}
+
+/* ---------- 2. SPECIALIZED PACKAGES: room for the folder ---------- */
+#packages .packages-folder-mount {
+  transform: none !important;        /* replaced by the folder's own size prop */
+  min-height: 0 !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  padding: 0 !important;
+}
+@media (min-width: 1100px) {
+  #packages .packages-left-wrapper {
+    width: min(100%, 960px) !important;
+    max-width: 960px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
+    align-items: center;
+    column-gap: clamp(24px, 3vw, 40px);
+  }
+  #packages .packages-left-wrapper > .wh { margin-bottom: 0 !important; }
+  #packages .packages-left-wrapper > .wh h2 { font-size: clamp(1.8rem, 2.4vw, 2.35rem) !important; }
+  /* Headroom for papers that rise out of the folder on load and on hover (peek). */
+  #packages .packages-folder-mount { padding-top: 104px !important; }
+}
+@media (max-width: 1099px) {
+  #packages .packages-left-wrapper { text-align: center; }
+  #packages .packages-left-wrapper > .wh { margin-bottom: 0 !important; }
+  #packages .packages-left-wrapper > .wh .lead { margin-inline: auto; }
+  #packages .packages-folder-mount { padding-top: 100px !important; }
+}
+@media (max-width: 600px) {
+  #packages .packages-folder-mount { padding-top: 72px !important; }
+}
+
+/* ---------- 3. WHY THE UAE: panel anchored right ---------- */
+@media (min-width: 761px) {
+  #why .why-right-wrapper {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+  }
+}
+/* Compact CTA tile so it no longer stretches the card beside it. */
+#why .wcta { position: relative; padding: 14px 16px !important; }
+#why .wcta .wb { position: absolute; top: 12px; left: 14px; margin: 0; }
+#why .wcta .wb svg { width: 20px; height: 20px; }
+#why .wcta p { margin: 4px 0 10px !important; max-width: 40ch !important; }
+#why .wcta .btn { padding: 8px 16px; }
+
+/* ---------- 4. EXECUTION ROADMAP: glass container ---------- */
+/* Same glass values as the other section panels (#single-section-glass-panels). */
+.beacon-roadmap .beacon-roadmap-glass-shell {
+  width: min(1160px, 100%) !important;
+  margin: 0 auto !important;
+  padding: clamp(22px, 3vw, 38px) !important;
+  border: 1px solid rgba(255,255,255,.72) !important;
+  border-radius: 28px !important;
+  background: linear-gradient(135deg, rgba(255,255,255,.76), rgba(255,255,255,.54)) !important;
+  box-shadow: 0 22px 64px rgba(0,55,125,.11), inset 0 1px 0 rgba(255,255,255,.9) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(145%) !important;
+  backdrop-filter: blur(22px) saturate(145%) !important;
+}
+.beacon-roadmap .beacon-roadmap-heading { margin-bottom: 14px !important; }
+.beacon-roadmap .beacon-roadmap-heading h2 {
+  font-size: clamp(1.7rem, 2.5vw, 2.4rem) !important;
+  max-width: 32ch;
+}
+.beacon-roadmap .beacon-roadmap-heading .lead { margin-top: 6px !important; }
+/* Inner step card: a plain light surface, no second blur on top of the shell. */
+#how .train-step-content {
+  min-height: 168px;
+  padding: clamp(20px, 2.4vw, 30px) clamp(22px, 3vw, 36px);
+  border-radius: 20px;
+  background: rgba(255,255,255,.62);
+  box-shadow: 0 10px 30px rgba(0,74,173,.06), inset 0 1px 0 rgba(255,255,255,.9);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+#how .train-step-eyebrow { margin-bottom: 10px; }
+#how .train-step-panel h3 { font-size: clamp(24px, 2.3vw, 32px); margin-bottom: 10px; }
+#how .train-step-panel p { font-size: clamp(14.5px, 1.1vw, 16px); line-height: 1.65; }
+#how .train-roadmap-controls { margin-top: 14px; }
+#how .br-footnote { margin-top: 10px; color: #5d6b80; }
+@media (max-width: 760px) {
+  .beacon-roadmap .beacon-roadmap-glass-shell {
+    width: calc(100% - 28px) !important;   /* same 330px width as the other panels at 390px */
+    padding: 18px 15px !important;
+    border-radius: 22px !important;
+  }
+  #how .train-step-content { min-height: 200px; padding: 20px 18px 22px 22px; }
+  #how .train-step-panel h3 { font-size: clamp(22px, 6vw, 28px); }
+}
 </style>
 
 </body>
