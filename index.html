@@ -10165,6 +10165,59 @@ html.nav-menu-open .slide-nav, html.nav-menu-open .wa-float { opacity: 0 !import
 @media (prefers-reduced-motion: reduce) { .sf-card { transition: none; } }
 </style>
 
+<style id="beacon-hero-gradient-and-service-crops">
+/* --- Hero: a soft off-white gradient behind the copy (from the right on desktop, from the top on
+       tablets/phones). It belongs to the hero only and scrolls away with it. --- */
+#hero::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  /* fade out just above the logo strip so the strip reads the same from edge to edge */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--hero-strip, 70px) - 40px), transparent calc(100% - var(--hero-strip, 70px)));
+          mask-image: linear-gradient(to bottom, #000 calc(100% - var(--hero-strip, 70px) - 40px), transparent calc(100% - var(--hero-strip, 70px)));
+  background: linear-gradient(to left,
+    rgba(246, 248, 252, .93) 0%, rgba(246, 248, 252, .86) 30%,
+    rgba(246, 248, 252, .55) 42%, rgba(246, 248, 252, .18) 50%, rgba(246, 248, 252, 0) 58%);
+}
+#hero > .wrap { position: relative; z-index: 2; }
+#hero .lg-strip { position: relative; z-index: 2; }
+#hero .hero-content::before { display: none !important; }   /* replaced by the gradient above */
+#hero .lead { color: rgba(0, 46, 112, .92) !important; font-weight: 500; }
+/* Hero fits the screen with the logo strip fully visible (it was cut 14-62px below the fold) */
+#hero { --hero-strip: 70px; }
+#hero .lg-strip { padding: 9px 0 !important; }
+#hero .lgt img { width: 52px !important; height: 52px !important; }
+@media (min-width: 1024px) {
+  /* photo keeps its top edge; its height leaves room for the strip */
+  #hero .hero-image-col img { max-height: calc(100svh - clamp(88px, 10vh, 116px) - var(--hero-strip) - 2px) !important; }   /* = hero top padding */
+}
+@media (max-width: 1023px) {
+  #hero { --hero-strip: 58px; }
+  #hero .lgt img { width: 42px !important; height: 42px !important; }
+  #hero.snap-section { height: 100svh !important; min-height: 540px !important; }
+  #hero > .wrap { flex: 1 1 auto !important; min-height: 0 !important; display: flex !important; flex-direction: column !important; }
+  #hero .hero-content { flex: none; }
+  #hero .hero-image-col { flex: 1 1 0 !important; min-height: 0 !important; display: flex !important; align-items: flex-end !important; }
+  #hero .hero-image-col img { height: 100% !important; min-height: 0 !important; }   /* takes the space left, up to its usual size */
+}
+@media (max-width: 1023px) {
+  #hero::before {
+    background: linear-gradient(to bottom,
+      rgba(246, 248, 252, .93) 0%, rgba(246, 248, 252, .86) 38%,
+      rgba(246, 248, 252, .45) 47%, rgba(246, 248, 252, 0) 54%);
+  }
+}
+
+/* --- Our Services: frame each photo on the faces. The photos are portrait (280x340) shown in wide
+       tiles, so only a band ~40% of the height is visible; one shared position cut through faces. --- */
+#services .service-card:nth-child(1) .service-card-front, #services .service-card:nth-child(1) .service-card-front::before { background-position: center 2% !important; }
+#services .service-card:nth-child(2) .service-card-front, #services .service-card:nth-child(2) .service-card-front::before { background-position: center 14% !important; }
+#services .service-card:nth-child(3) .service-card-front, #services .service-card:nth-child(3) .service-card-front::before { background-position: center 22% !important; }
+#services .service-card:nth-child(4) .service-card-front, #services .service-card:nth-child(4) .service-card-front::before { background-position: center 30% !important; }
+#services .service-card:nth-child(5) .service-card-front, #services .service-card:nth-child(5) .service-card-front::before { background-position: center 46% !important; }
+#services .service-card:nth-child(6) .service-card-front, #services .service-card:nth-child(6) .service-card-front::before { background-position: center 10% !important; }
+#services .service-card:nth-child(7) .service-card-front, #services .service-card:nth-child(7) .service-card-front::before { background-position: center 5% !important; }
+#services .service-card:nth-child(8) .service-card-front, #services .service-card:nth-child(8) .service-card-front::before { background-position: center 38% !important; }
+</style>
+
 <script id="beacon-nav-pill-js">
 (() => {
   const nav = document.getElementById('nav'), panel = document.getElementById('lk'), btn = document.getElementById('mb');
