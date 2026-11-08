@@ -3069,14 +3069,14 @@ select:focus { outline: none; border-color: var(--orange); }
 
 <!-- Floating Presentation Slide Navigation -->
 <aside class="slide-nav" aria-label="Page Sections Navigation">
-  <button class="slide-dot active" data-target="#hero" title="Hero"></button>
+  <button class="slide-dot active" data-target="#hero" title="Hero" aria-label="Go to Hero"></button>
   <button class="slide-dot" data-target="#calc" title="Tax Calculator" aria-label="Go to Tax Calculator"></button>
   <button class="slide-dot" data-target="#about" title="About" aria-label="Go to About"></button>
   <button class="slide-dot" data-target="#why" title="Why UAE" aria-label="Go to Why UAE"></button>
   <button class="slide-dot" data-target="#services" title="Services" aria-label="Go to Services"></button>
   <button class="slide-dot" data-target="#packages" title="Packages" aria-label="Go to Packages"></button>
   <button class="slide-dot" data-target="#how" title="How It Works" aria-label="Go to How It Works"></button>
-  <button class="slide-dot" data-target="#team" title="Team"></button>
+  <button class="slide-dot" data-target="#team" title="Team" aria-label="Go to Team"></button>
   <button class="slide-dot" data-target="#gallery" title="Gallery" aria-label="Go to Gallery"></button>
   <button class="slide-dot" data-target="#location" title="Location" aria-label="Go to Location"></button>
   <button class="slide-dot" data-target="#contact" title="Contact" aria-label="Go to Contact"></button>
@@ -3087,15 +3087,15 @@ select:focus { outline: none; border-color: var(--orange); }
     <img src="assets/logo.png" alt="BEACON UAE" width="120" height="34" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'BEACON'}))">
   </a>
   <div class="links" id="lk">
-    <a href="#about">About</a>
     <a href="#calc">Tax Calculator</a>
+    <a href="#about">About</a>
     <a href="#why">Why UAE</a>
     <a href="#services">Services</a>
     <a href="#packages">Packages</a>
     <a href="#how">How It Works</a>
-    <a href="#team">Our Team</a>
-    <a href="#gallery">Reviews</a>
-    <a href="#location">Location</a>
+    <a href="#team">Team</a>
+    <a href="#gallery">Gallery &amp; Reviews</a>
+    <a href="#location">FAQ</a>
     <a class="btn sm mob" href="https://wa.me/971547775023" target="_blank" rel="noopener">Contact Us</a>
   </div>
   <a class="btn sm nav-cta" href="https://wa.me/971547775023" target="_blank" rel="noopener">Contact Us</a>
@@ -9438,6 +9438,158 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
   #hero .hero-image-col img { height: 38svh !important; max-height: 38svh !important; }
 }
 </style>
+
+<!-- Navigation refinement: no wrapping (burger at <=1023px, compact links 1024-1199px),
+     current-section highlight, accessible mobile menu, section dots hidden on phones. -->
+<style id="beacon-nav-refinement">
+/* Links never wrap onto two lines */
+#nav .links a { white-space: nowrap; }
+
+/* Current section: soft blue pill with a small orange marker */
+#nav .links a:not(.btn) { position: relative; }
+#nav .links a[aria-current]:not(.btn) { background: rgba(0,74,173,.09); color: #004aad; }
+#nav .links a[aria-current]:not(.btn)::after {
+  content: ""; position: absolute; left: 50%; bottom: 3px; width: 4px; height: 4px;
+  margin-left: -2px; border-radius: 50%; background: #F5811E;
+}
+#nav .links a:not(.btn):focus-visible { outline: 2px solid #004aad; outline-offset: 2px; }
+
+/* Desktop: keep the floating tab (and its corner flares) clear of the window edges */
+@media (min-width: 1024px) {
+  #nav { width: min(1080px, calc(100% - 48px)); }
+}
+/* Compact desktop links, 1024-1199px */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  #nav { padding: 10px 16px 14px 18px; gap: 12px; }
+  #nav .links a:not(.btn) { padding: 8px 8px; font-size: .8rem; }
+}
+
+/* Burger navigation at 1023px and below (was 860px) */
+@media (max-width: 1023px) {
+  #nav { display: flex; justify-content: space-between; padding: 10px 18px; border-radius: 0 0 20px 20px; }
+  #nav::before, #nav::after { display: none; }
+  #nav .nav-cta { display: none; }
+  #nav .burger { display: block; }
+  #nav .links {
+    position: absolute; top: calc(100% + 8px); left: auto; right: 12px;
+    justify-self: stretch;                 /* was "center", which shrank the panel to 156px */
+    width: min(300px, calc(100vw - 24px));
+    max-height: calc(100dvh - 90px); overflow-y: auto; overscroll-behavior: contain;
+    flex-direction: column; gap: 2px; padding: 12px;
+    background: #fff; border: 1px solid var(--line); border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,74,173,.14);
+    transform-origin: top right;
+    opacity: 0; visibility: hidden; transform: translateY(-8px) scale(.98);
+    transition: opacity .22s var(--ease), transform .22s var(--ease), visibility 0s linear .22s;
+  }
+  #nav .links.on {
+    opacity: 1; visibility: visible; transform: none;
+    transition: opacity .26s var(--ease), transform .26s var(--ease), visibility 0s;
+  }
+  #nav .links a:not(.btn) {
+    display: flex; align-items: center; min-height: 44px; padding: 10px 16px;
+    font-size: .95rem; border-radius: 12px;
+  }
+  #nav .links a[aria-current]:not(.btn)::after { left: auto; right: 16px; bottom: auto; top: 50%; margin: -2px 0 0; }
+  #nav .links .mob { display: inline-flex; min-height: 44px; margin-top: 8px; }
+  /* burger -> close icon */
+  #nav .burger span { transition: top .22s var(--ease), transform .22s var(--ease); }
+  #nav .burger[aria-expanded="true"] span:nth-child(1) { top: 21px; transform: rotate(45deg); }
+  #nav .burger[aria-expanded="true"] span:nth-child(2) { top: 21px; transform: rotate(-45deg); }
+}
+/* Background scroll lock while the menu is open */
+html.nav-menu-open, html.nav-menu-open body { overflow: hidden !important; }
+html.nav-menu-open { scrollbar-gutter: stable; }
+
+/* Section dots: hidden on phones and small tablets */
+@media (max-width: 860px) {
+  .slide-nav { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #nav .links, #nav .links.on, #nav .burger span { transition: none !important; }
+}
+</style>
+
+<script id="beacon-nav-refinement-js">
+(() => {
+  const nav = document.getElementById('nav');
+  const btn = document.getElementById('mb');
+  const panel = document.getElementById('lk');
+  if (!nav || !btn || !panel) return;
+  const root = document.documentElement;
+  const burgerMode = window.matchMedia('(max-width: 1023px)');
+  const items = () => Array.from(panel.querySelectorAll('a'));
+  const isOpen = () => panel.classList.contains('on');
+
+  function setOpen(open, { returnFocus = false } = {}) {
+    panel.classList.toggle('on', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    root.classList.toggle('nav-menu-open', open);
+    if (open) {
+      // wait for visibility to apply, then focus the first link
+      requestAnimationFrame(() => items()[0]?.focus({ preventScroll: true }));
+    } else if (returnFocus) {
+      btn.focus({ preventScroll: true });
+    }
+  }
+
+  // Replaces the original toggle (same behaviour, plus labels, focus and scroll lock)
+  btn.onclick = event => { event.stopPropagation(); setOpen(!isOpen()); };
+  items().forEach(a => a.addEventListener('click', () => setOpen(false)));
+
+  document.addEventListener('keydown', event => {
+    if (!isOpen()) return;
+    if (event.key === 'Escape') { event.preventDefault(); setOpen(false, { returnFocus: true }); return; }
+    if (event.key !== 'Tab') return;
+    // keep Tab inside the menu and its toggle while open
+    const cycle = [...items(), btn];
+    const i = cycle.indexOf(document.activeElement);
+    if (event.shiftKey && (i === 0 || i === -1)) { event.preventDefault(); btn.focus(); }
+    else if (!event.shiftKey && i === cycle.length - 1) { event.preventDefault(); cycle[0].focus(); }
+  });
+  // Outside *tap* closes the menu; a swipe on the background does not (it is blocked instead)
+  let downAt = null;
+  document.addEventListener('pointerdown', event => {
+    downAt = isOpen() && !panel.contains(event.target) && !btn.contains(event.target) ? [event.clientX, event.clientY] : null;
+  });
+  document.addEventListener('pointerup', event => {
+    if (!downAt || !isOpen()) return;
+    const moved = Math.hypot(event.clientX - downAt[0], event.clientY - downAt[1]);
+    downAt = null;
+    if (moved < 10) setOpen(false);
+  });
+  // iOS ignores overflow:hidden on the page; block touch scrolling outside the panel
+  document.addEventListener('touchmove', event => {
+    if (isOpen() && !panel.contains(event.target)) event.preventDefault();
+  }, { passive: false });
+  // leaving burger mode (e.g. rotating a tablet) closes the menu
+  burgerMode.addEventListener?.('change', e => { if (!e.matches && isOpen()) setOpen(false); });
+
+  // Current-section highlight (aria-current) for the nav links
+  const links = Array.from(panel.querySelectorAll('a[href^="#"]'));
+  const byId = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  const sections = Array.from(byId.keys()).map(id => document.getElementById(id)).filter(Boolean);
+  const mark = id => links.forEach(a => {
+    if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'location');
+    else a.removeAttribute('aria-current');
+  });
+  if ('IntersectionObserver' in window && sections.length) {
+    const visible = new Set();
+    const pick = () => {
+      // the section crossing the middle band of the viewport; none for hero/contact
+      const current = sections.find(s => visible.has(s.id));
+      mark(current ? current.id : null);
+    };
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => e.isIntersecting ? visible.add(e.target.id) : visible.delete(e.target.id));
+      pick();
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(s => io.observe(s));
+  }
+})();
+</script>
 
 </body>
 </html>
