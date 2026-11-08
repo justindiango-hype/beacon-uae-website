@@ -8759,7 +8759,8 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
       + 'c=mix(c,vec3(.97,.98,1.),smoothstep(.56,.82,ci)*.32*smoothstep(.06,.45,y));'
       // 3) a soft band of distant clouds just above the horizon, for depth
       + 'float hb=smoothstep(.0,.035,y)*(1.-smoothstep(.06,.16,y));'
-      + 'float hc=smoothstep(.46,.72,fbm(vec2(atan(d.x,d.z)*7.,y*18.)+vec2(t*.002,0.)));'
+      // sampled by horizontal direction (not by angle, which wraps at +-180 degrees and left a hard seam)
+      + 'vec2 hd=normalize(d.xz+vec2(1e-5));float hc=smoothstep(.46,.72,fbm(hd*4.5+vec2(y*18.+t*.002,y*3.)));'
       + 'c=mix(c,vec3(.95,.96,.98),hb*hc*.65);}'
       // sun: tight disc, soft glow, and a warm tint of the haze around it
       + 'float sd=max(dot(d,sunDir),0.);float up=smoothstep(0.,.05,e);'
