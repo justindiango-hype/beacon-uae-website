@@ -8706,7 +8706,7 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
   } catch (e) { canvas.remove(); return; }
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
   renderer.outputEncoding = T.sRGBEncoding;
-  renderer.toneMapping = T.LinearToneMapping; renderer.toneMappingExposure = 1.0;
+  renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.12;   // filmic: bright sun without clipping the Burj to white
   renderer.setClearColor(0x000000, 0);
 
   const scene = new T.Scene();
@@ -8745,16 +8745,22 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
       + 'float n(vec2 q){vec2 i=floor(q),f=fract(q);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}'
       + 'float fbm(vec2 q){float v=0.,a=.5;for(int i=0;i<6;i++){v+=a*n(q);q=q*2.03+vec2(1.7,9.2);a*=.5;}return v;}'
       + 'void main(){vec3 d=normalize(p);float y=d.y;float e=max(y,0.);'
-      // sky colour: pale haze at the horizon, then light blue, then deeper blue overhead
-      + 'vec3 c=mix(haze,vec3(.55,.74,.95),smoothstep(0.,.20,e));'
-      + 'c=mix(c,vec3(.20,.43,.80),smoothstep(.12,.85,e));'
-      // clouds: layered noise on a flat cloud deck, shaded toward the sun, fading out near the horizon
-      + 'if(y>.01){vec2 uv=d.xz/(y+.10)*1.2+vec2(t*.006,t*.002);'
-      + 'float a=fbm(uv);float cl=smoothstep(.48,.80,a)*smoothstep(.01,.22,y);'
-      + 'float b=fbm(uv+sunDir.xz*.05);float sh=clamp((a-b)*4.+.55,0.,1.);'
-      + 'vec3 cc=mix(vec3(.74,.79,.88),vec3(1.,.985,.96),sh);'
-      + 'float wisp=smoothstep(.40,.62,fbm(uv*2.3+7.))*.22*smoothstep(.02,.3,y);'
-      + 'c=mix(c,cc,clamp(cl*.92+wisp,0.,1.));}'
+      // sky colour: a narrow pale horizon, clear Dubai blue above it, deeper blue overhead
+      + 'vec3 c=mix(haze,vec3(.50,.70,.95),smoothstep(0.,.10,e));'
+      + 'c=mix(c,vec3(.16,.38,.78),smoothstep(.08,.70,e));'
+      + 'if(y>.005){'
+      // 1) mid-level fair-weather cumulus: shaped by two noise octaves, lit from the sun side
+      + 'vec2 uv=d.xz/(y+.12)*.9+vec2(t*.004,t*.0015);float a=fbm(uv);float b=fbm(uv*2.1+3.);'
+      + 'float cov=smoothstep(.52,.72,a*.75+b*.25)*smoothstep(.0,.20,y);'
+      + 'float sh=clamp((a-fbm(uv+sunDir.xz*.06))*5.+.62,0.,1.);'
+      + 'vec3 cc=mix(vec3(.70,.76,.87),vec3(1.,.99,.97),sh);c=mix(c,cc,cov*.94);'
+      // 2) high thin cirrus streaks, drifting a different way
+      + 'vec2 uv2=d.xz/(y+.05)*.55+vec2(t*.009,-t*.003);float ci=fbm(vec2(uv2.x*3.2,uv2.y*.7));'
+      + 'c=mix(c,vec3(.97,.98,1.),smoothstep(.56,.82,ci)*.32*smoothstep(.06,.45,y));'
+      // 3) a soft band of distant clouds just above the horizon, for depth
+      + 'float hb=smoothstep(.0,.035,y)*(1.-smoothstep(.06,.16,y));'
+      + 'float hc=smoothstep(.46,.72,fbm(vec2(atan(d.x,d.z)*7.,y*18.)+vec2(t*.002,0.)));'
+      + 'c=mix(c,vec3(.95,.96,.98),hb*hc*.65);}'
       // sun: tight disc, soft glow, and a warm tint of the haze around it
       + 'float sd=max(dot(d,sunDir),0.);float up=smoothstep(0.,.05,e);'
       + 'c+=vec3(1.,.86,.62)*(pow(sd,900.)*2.+pow(sd,60.)*.30+pow(sd,7.)*.10)*up;'
@@ -8771,9 +8777,9 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
   scene.environment = pm.fromScene(envScene).texture;
   pm.dispose();
 
-  const key = new T.DirectionalLight(0xfff0dc, 2.4); key.position.set(-60, 50, 40); scene.add(key);
+  const key = new T.DirectionalLight(0xffe9cc, 3.0); key.position.set(-60, 50, 40); scene.add(key);
   const fillL = new T.DirectionalLight(0x9cc0ff, .6); fillL.position.set(60, 30, -40); scene.add(fillL);
-  scene.add(new T.HemisphereLight(0xcfe0ff, 0xc7b8c0, 0.45));
+  scene.add(new T.HemisphereLight(0xc4dcff, 0xd9c6a2, 0.7));   // sky above, warm sand bounce below
 
   // window-band texture so the glass reads as a facade
   const wc = document.createElement('canvas'); wc.width = wc.height = 64;
@@ -8841,6 +8847,7 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
   // Enhanced Dubai city (Draco-compressed) first; the original model is the fallback if Draco or the file is unavailable.
   const MODELS = ['assets/dubai_city_enhanced.glb', 'assets/burj_khalifa_web.glb', 'burj_khalifa_web.glb'];
   const CX = 347.5, CZ = -345.7, GROUND = 31.2, S = 100 / 828; // tower axis + ground level in the model, scaled so the spire is 100 tall
+  const uTime = { value: 0 };   // drives the Burj glints/sheen and the birds' wingbeats
   const onModel = gltf => {
     const m = gltf.scene;
     m.scale.setScalar(S); m.position.set(-CX * S, -GROUND * S, -CZ * S);
@@ -8884,7 +8891,7 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
     // AIR_HAZE  = how much distant parts of the city get hazy (0 = none).
     // SHINE     = how much the Burj Khalifa glass reflects the sky and flashes in the sun (0 = off, 1 = strong).
     const SHINE = 1.0;
-    const EDGE_FADE = 28, AIR_HAZE = 0.15;
+    const EDGE_FADE = 28, AIR_HAZE = 0.26;
     m.updateMatrixWorld(true);
     let terrain = null; m.traverse(o => { if (o.isMesh && o.name === 'Terrain') terrain = o; });
     const tb = new T.Box3().setFromObject(terrain || m);
@@ -8899,28 +8906,37 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
     });
     const hazeShader = function (sh) {
       sh.uniforms.uBounds = uBounds; sh.uniforms.uHaze = uHaze; sh.uniforms.uFade = uFade; sh.uniforms.uAir = uAir;
-      sh.uniforms.uSun = uSun; sh.uniforms.uShine = { value: burjMats.has(this) ? SHINE : 0 };
+      const isBurj = burjMats.has(this), isCityGlass = this.name === 'City_Glass';
+      sh.uniforms.uSun = uSun; sh.uniforms.uTime = uTime;
+      sh.uniforms.uShine = { value: isBurj ? SHINE : (isCityGlass ? 0.35 : 0) };   // sky reflection strength
+      sh.uniforms.uGlint = { value: isBurj ? 1.0 : (isCityGlass ? 0.12 : 0) };     // sun glints / sparkle strength
       sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vHz;')
         .replace('#include <begin_vertex>', '#include <begin_vertex>\nvHz = (modelMatrix * vec4(transformed, 1.0)).xyz;');
-      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vHz; uniform vec4 uBounds; uniform vec3 uHaze; uniform float uFade; uniform float uAir; uniform vec3 uSun; uniform float uShine;')
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vHz; uniform vec4 uBounds; uniform vec3 uHaze; uniform float uFade; uniform float uAir; uniform vec3 uSun; uniform float uShine; uniform float uGlint; uniform float uTime;')
         .replace('#include <dithering_fragment>', `#include <dithering_fragment>
-        if (uShine > 0.0) {   // Burj shine: sky reflection (strongest at grazing angles) + sun glints that sparkle window by window
-          vec3 Vv = normalize(vViewPosition);
-          vec3 Rv = reflect(-Vv, normalize(normal));
-          vec3 Rw = normalize((vec4(Rv, 0.0) * viewMatrix).xyz);
-          float fres = 0.45 + 0.55 * pow(1.0 - clamp(dot(normalize(normal), Vv), 0.0, 1.0), 3.0);
+        if (uShine > 0.0) {   // glass & steel: Fresnel sky reflection, sun glints, twinkling windows, a slow travelling sheen
+          vec3 Nv = normalize(normal); vec3 Vv = normalize(vViewPosition);
+          vec3 Rw = normalize((vec4(reflect(-Vv, Nv), 0.0) * viewMatrix).xyz);
+          vec3 Nw = normalize((vec4(Nv, 0.0) * viewMatrix).xyz);
+          float fres = 0.08 + 0.92 * pow(1.0 - clamp(dot(Nv, Vv), 0.0, 1.0), 4.0);   // sky shows mostly at grazing angles
           float re = max(Rw.y, 0.0);
-          vec3 sk = mix(uHaze, vec3(0.55, 0.74, 0.95), smoothstep(0.0, 0.2, re));
-          sk = mix(sk, vec3(0.20, 0.43, 0.80), smoothstep(0.12, 0.85, re));
-          sk = mix(sk, vec3(0.62, 0.56, 0.48), smoothstep(0.0, 0.35, -Rw.y));
+          vec3 sk = mix(uHaze, vec3(0.46, 0.66, 0.92), smoothstep(0.0, 0.16, re));
+          sk = mix(sk, vec3(0.16, 0.36, 0.74), smoothstep(0.12, 0.8, re));
+          sk = mix(sk, vec3(0.50, 0.46, 0.40), smoothstep(0.0, 0.3, -Rw.y));
           float sd = max(dot(Rw, uSun), 0.0);
+          float sunlit = max(dot(Nw, uSun), 0.0);
           float cell = fract(sin(dot(floor(vec2(vHz.y * 2.2, atan(vHz.x, vHz.z) * 22.0)), vec2(12.9898, 78.233))) * 43758.5453);
-          float glint = pow(sd, 10.0) * (0.25 + 1.1 * cell) + pow(sd, 120.0) * 4.0;
-          gl_FragColor.rgb += sk * fres * 0.85 * uShine + vec3(1.0, 0.92, 0.75) * glint * 1.3 * uShine;
+          float tw = 0.5 + 0.5 * sin(uTime * 1.6 + cell * 61.0);          // each window twinkles on its own beat
+          float topk = smoothstep(55.0, 95.0, vHz.y);                       // a little more sparkle toward the spire
+          float glint = pow(sd, 48.0) * (0.35 + 1.4 * cell) + pow(sd, 600.0) * 3.0;
+          float spark = step(0.975 - 0.05 * topk, cell) * tw * tw * pow(sd, 5.0) * (0.9 + 1.2 * topk);
+          float ph = mod(uTime * 4.0, 160.0) - 30.0;                         // a soft band of sunlight drifting up the tower
+          float sheen = exp(-pow((vHz.y - ph) / 9.0, 2.0)) * (0.25 + 0.75 * sunlit) * 0.16;
+          gl_FragColor.rgb += sk * fres * 0.6 * uShine + vec3(1.0, 0.93, 0.80) * (glint + spark + sheen) * uGlint;
         }
         float hzEdge = min(min(vHz.x - uBounds.x, uBounds.y - vHz.x), min(vHz.z - uBounds.z, uBounds.w - vHz.z));
         float hzA = 1.0 - smoothstep(0.0, uFade, hzEdge);
-        float hzB = (1.0 - exp(-pow(length(vHz - cameraPosition) / 700.0, 2.0))) * uAir;
+        float hzB = (1.0 - exp(-pow(length(vHz - cameraPosition) / 520.0, 2.0))) * uAir;   // atmospheric perspective
         gl_FragColor.rgb = mix(gl_FragColor.rgb, uHaze, clamp(max(hzA, hzB), 0.0, 1.0));`);
     };
     const hzDone = new Set();
@@ -8939,13 +8955,14 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
       if (o.material.name === 'City_Glass') { o.material.metalness = 0.15; o.material.roughness = 0.28; }
       if (o.material.name === 'City_Metal') { o.material.metalness = 0.2; o.material.roughness = 0.4; }
     });
-    if (window.matchMedia('(min-width: 900px)').matches) {
+    const desktop = window.matchMedia('(min-width: 900px)').matches;
+    {   // static sun shadows on every device; mobile uses a smaller map
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = T.PCFSoftShadowMap;
       renderer.shadowMap.autoUpdate = false;           // the city and sun never move: render the shadow map once
       key.castShadow = true;
       key.position.set(-60, 50, 40).multiplyScalar(4);   // same sun direction, far enough to cover the map
-      key.shadow.mapSize.set(2048, 2048);
+      key.shadow.mapSize.set(desktop ? 2048 : 1024, desktop ? 2048 : 1024);
       key.shadow.bias = -0.0004; key.shadow.normalBias = 0.04;
       const sc = key.shadow.camera;
       sc.left = -240; sc.right = 240; sc.top = 240; sc.bottom = -240; sc.near = 10; sc.far = 800;
@@ -8953,6 +8970,117 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
       m.traverse(o => { if (o.isMesh) { o.castShadow = o.name !== 'Terrain'; o.receiveShadow = true; } });
       renderer.shadowMap.needsUpdate = true;
     }
+
+    // ===== Burj Khalifa materials: silver-blue steel and tinted glass (geometry and textures unchanged) =====
+    m.traverse(o => {
+      if (!o.isMesh) return;
+      if (o.name === 'Object_9') { o.material.color.set(0xaeb8c4); o.material.metalness = 0.58; o.material.roughness = 0.28; }
+      if (o.name === 'Object_4') { o.material.color.set(0xb4c4d6); o.material.metalness = 0.15; o.material.roughness = 0.4; }
+      if (o.name === 'Terrain') { o.material.color.set(0xcfcac2); o.material.roughness = 1; o.material.metalness = 0; }   // matte ground, no bleached sheen
+    });
+
+    // ===== a delicate star glint at the spire tip =====
+    const sc2 = document.createElement('canvas'); sc2.width = sc2.height = 128;
+    const s2 = sc2.getContext('2d');
+    const rg = s2.createRadialGradient(64, 64, 0, 64, 64, 64);
+    rg.addColorStop(0, 'rgba(255,250,235,1)'); rg.addColorStop(.12, 'rgba(255,236,200,.55)'); rg.addColorStop(1, 'rgba(255,236,200,0)');
+    s2.fillStyle = rg; s2.fillRect(0, 0, 128, 128);
+    s2.globalCompositeOperation = 'lighter';
+    [[128, 3], [3, 128]].forEach(([w, h]) => {
+      const lg = w > h ? s2.createLinearGradient(0, 0, 128, 0) : s2.createLinearGradient(0, 0, 0, 128);
+      lg.addColorStop(0, 'rgba(255,240,210,0)'); lg.addColorStop(.5, 'rgba(255,248,230,.9)'); lg.addColorStop(1, 'rgba(255,240,210,0)');
+      s2.fillStyle = lg; s2.fillRect(64 - w / 2, 64 - h / 2, w, h);
+    });
+    const spireStar = new T.Sprite(new T.SpriteMaterial({ map: new T.CanvasTexture(sc2), transparent: true, depthWrite: false, blending: T.AdditiveBlending, fog: false, toneMapped: false, sizeAttenuation: false }));
+    spireStar.position.set(0, 100.2, 0); spireStar.scale.setScalar(desktop ? 0.045 : 0.032); scene.add(spireStar);   // constant on-screen size at every camera distance
+
+    // ===== life: cars on the real roads (traced from the terrain image) and a small flock of birds =====
+    let terrainMesh = null; m.traverse(o => { if (o.isMesh && o.name === 'Terrain') terrainMesh = o; });
+    // road points are pixels in a 1200x800 crop of the satellite texture (1 crop px = 0.5 px of its 832x512 preview)
+    const toScene = (cx, cy) => {
+      const u = (200 + cx / 2) / 832, v = 1 - (40 + cy / 2) / 512;
+      const bx = (u - 0.0018) / 0.988 * 3554 - 1775, by = (v - 0.011) / 0.894 * 1979 - 982.6;
+      return new T.Vector3((bx - CX) * S, 0, (-by - CZ) * S);
+    };
+    const ROADS = [
+      [[560, 15], [700, 75], [800, 120], [1000, 210], [1200, 295]],                                   // Financial Centre Road
+      [[0, 470], [130, 280], [200, 180], [260, 90], [320, 0]],                                         // Sheikh Zayed Road
+      [[420, 250], [385, 350], [395, 470], [440, 570], [530, 645], [640, 665], [760, 620], [860, 540], [900, 470]]   // Mohammed bin Rashid Blvd
+    ];
+    const ray = new T.Raycaster(), down = new T.Vector3(0, -1, 0);
+    const lanes = [];
+    ROADS.forEach(road => {
+      const pts = road.map(([x, y]) => toScene(x, y));
+      [1, -1].forEach(side => {   // two lanes, opposite directions
+        const lane = []; let len = 0;
+        const src = side > 0 ? pts : pts.slice().reverse();
+        for (let i = 0; i < src.length - 1; i++) {
+          const a = src[i], b = src[i + 1], seg = a.distanceTo(b), n = Math.max(1, Math.round(seg / 1.5));
+          const dir = b.clone().sub(a).normalize(), off = new T.Vector3(-dir.z, 0, dir.x).multiplyScalar(0.45);
+          for (let k = 0; k < n; k++) {
+            const p = a.clone().lerp(b, k / n).add(off);
+            ray.set(new T.Vector3(p.x, 200, p.z), down);
+            const hit = terrainMesh && ray.intersectObject(terrainMesh, false)[0];
+            p.y = (hit ? hit.point.y : 0) + 0.14;
+            if (lane.length) len += p.distanceTo(lane[lane.length - 1].p);
+            lane.push({ p, s: len });
+          }
+        }
+        if (lane.length > 2) lanes.push({ pts: lane, len });
+      });
+    });
+    const CARS = desktop ? 110 : 40;
+    const cars = new T.InstancedMesh(new T.BoxGeometry(0.62, 0.22, 0.28), new T.MeshStandardMaterial({ roughness: 0.35, metalness: 0.3 }), CARS);
+    const palette = [0xf2f2f0, 0xf2f2f0, 0xc9ccd1, 0x2a2d33, 0x9aa1aa, 0xb3262b, 0x1f4e8c, 0xe8e2d4];
+    const carState = [];
+    for (let i = 0; i < CARS; i++) {
+      const lane = lanes[i % lanes.length];
+      carState.push({ lane, s: Math.random() * lane.len, v: 0.9 + Math.random() * 0.7 });
+      cars.setColorAt(i, new T.Color(palette[i % palette.length]));
+    }
+    cars.frustumCulled = false; scene.add(cars);
+
+    const BIRDS = desktop ? 14 : 8;
+    const bg = new T.BufferGeometry();
+    bg.setAttribute('position', new T.Float32BufferAttribute([0, 0, 0.14, -0.48, 0, -0.1, 0, 0, -0.12, 0, 0, 0.14, 0, 0, -0.12, 0.48, 0, -0.1], 3));
+    const phases = new Float32Array(BIRDS).map(() => Math.random() * 6.28);
+    bg.setAttribute('aPhase', new T.InstancedBufferAttribute(phases, 1));
+    const birdMat = new T.MeshBasicMaterial({ color: 0x2c333d, side: T.DoubleSide, fog: false });
+    birdMat.onBeforeCompile = sh => {
+      sh.uniforms.uTime = uTime;
+      sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nattribute float aPhase; uniform float uTime;')
+        .replace('#include <begin_vertex>', '#include <begin_vertex>\ntransformed.y += sin(uTime * 9.0 + aPhase) * abs(position.x) * 0.6;');
+    };
+    const birds = new T.InstancedMesh(bg, birdMat, BIRDS); birds.frustumCulled = false; scene.add(birds);
+    const flock = Array.from({ length: BIRDS }, (_, i) => ({ a: i * 0.38 + Math.random() * 0.2, r: 24 + Math.random() * 11, h: 76 + Math.random() * 10, w: 0.10 + Math.random() * 0.02, bob: Math.random() * 6.28 }));
+    birds.visible = !reduce;   // reduced motion: no wheeling flock
+
+    const dummy = new T.Object3D(), tmp = new T.Vector3();
+    const placeCars = dt => {
+      carState.forEach((c, i) => {
+        c.s = (c.s + c.v * dt) % c.lane.len;
+        const pts = c.lane.pts; let k = 1; while (k < pts.length - 1 && pts[k].s < c.s) k++;
+        const a = pts[k - 1], b = pts[k], f = (c.s - a.s) / Math.max(1e-4, b.s - a.s);
+        dummy.position.copy(a.p).lerp(b.p, Math.min(1, Math.max(0, f)));
+        tmp.copy(b.p).sub(a.p); dummy.rotation.set(0, Math.atan2(-tmp.z, tmp.x), 0);
+        dummy.updateMatrix(); cars.setMatrixAt(i, dummy.matrix);
+      });
+      cars.instanceMatrix.needsUpdate = true;
+    };
+    placeCars(0);
+    life = (dt, tt) => {
+      spireStar.material.opacity = reduce ? 0.5 : 0.36 + 0.26 * (0.5 + 0.5 * Math.sin(tt * 1.1)) + 0.12 * Math.max(0, Math.sin(tt * 3.7));
+      if (reduce) return;
+      placeCars(dt);
+      flock.forEach((b, i) => {
+        b.a += b.w * dt;
+        const x = Math.cos(b.a) * b.r, z = Math.sin(b.a) * b.r, y = b.h + Math.sin(tt * 0.6 + b.bob) * 1.2;
+        dummy.position.set(x, y, z);
+        dummy.rotation.set(0, -b.a, Math.sin(tt * 0.5 + b.bob) * 0.18);   // face along the circle, with a gentle bank
+        dummy.updateMatrix(); birds.setMatrixAt(i, dummy.matrix);
+      });
+      birds.instanceMatrix.needsUpdate = true;
+    };
     kick();
   };
   let draco = null;
@@ -8993,10 +9121,12 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
     const span = (tops[i + 1] || tops[i] + 1) - tops[i];
     const t = i === SHOTS.length - 1 ? 0 : sm(Math.min(1, Math.max(0, (y - tops[i]) / Math.max(1, span))));
     ['az', 'el', 'd', 'y', 'x', 'o'].forEach(p => { tgt[p] = mix(a[p], b[p], t); });
-    if (vw < 900) { tgt.x = 0; tgt.o *= .55; }
+    tgt.o = 0.9 + 0.1 * tgt.o;                 // keep the sky and city vivid behind every section
+    if (vw < 900) { tgt.x = 0; tgt.o *= .85; }
     tgt.px = ptr.x; tgt.py = ptr.y;
   }
 
+  let life = null;   // cars, birds and the spire glint, set up once the model loads
   let raf = 0, last = 0;
   function kick() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); } }
   function tick(now) {
@@ -9015,6 +9145,8 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
     camera.setViewOffset(vw, vh, -cur.x * vw, 0, vw, vh);
     const bx = -Math.sin(az), bz = -Math.cos(az), rx = Math.cos(az), rz = -Math.sin(az);
     sky.position.copy(camera.position); sky.material.uniforms.t.value = tt;
+    uTime.value = reduce ? 0 : tt;
+    if (life) life(dt, tt);
     const pu = reduce ? .5 : .5 + .5 * Math.sin(tt * 2.2);
     beacon.material.opacity = .45 + .5 * pu; beacon.scale.set(5 + 6 * pu, 5 + 6 * pu, 1);
     renderer.render(scene, camera);
