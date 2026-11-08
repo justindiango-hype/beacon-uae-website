@@ -3087,16 +3087,17 @@ select:focus { outline: none; border-color: var(--orange); }
   <a class="brand" href="#top" aria-label="BEACON home">
     <img src="assets/logo.png" alt="BEACON UAE" width="120" height="34" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'BEACON'}))">
   </a>
+  <span class="nav-section" id="navSection">Home</span>
   <div class="links" id="lk">
-    <a href="#calc">Tax Calculator</a>
-    <a href="#about">About</a>
-    <a href="#why">Why UAE</a>
-    <a href="#services">Services</a>
-    <a href="#packages">Packages</a>
-    <a href="#how">How It Works</a>
-    <a href="#team">Team</a>
-    <a href="#gallery">Gallery &amp; Reviews</a>
-    <a href="#location">FAQ</a>
+    <a href="#calc">Tax Calculator<small>Compare your tax position with the UAE</small></a>
+    <a href="#about">About<small>Who we are and how we work</small></a>
+    <a href="#why">Why UAE<small>Tax, ownership and residency advantages</small></a>
+    <a href="#services">Services<small>Company setup, visas, banking and more</small></a>
+    <a href="#packages">Packages<small>Mainland and Free Zone packages</small></a>
+    <a href="#how">How It Works<small>Five steps to your trade licence</small></a>
+    <a href="#team">Team<small>Meet the specialists</small></a>
+    <a href="#gallery">Gallery &amp; Reviews<small>Life in Dubai and client stories</small></a>
+    <a href="#location">FAQ<small>Visit us or ask a quick question</small></a>
     <a class="btn sm mob" href="https://wa.me/971547775023" target="_blank" rel="noopener">Contact Us</a>
   </div>
   <a class="btn sm nav-cta" href="https://wa.me/971547775023" target="_blank" rel="noopener">Contact Us</a>
@@ -8734,7 +8735,7 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
   // ===== realistic daytime sky (replaces the old gradient) =====
   // HAZE is the colour of the horizon. The sky fades to it, and the edge of the 3D map fades to it too,
   // so the map's edge melts into the horizon instead of showing a hard cut-off.
-  const HAZE = new T.Vector3(0.82, 0.89, 0.96);
+  const HAZE = new T.Vector3(0.66, 0.81, 0.97);   // a clear blue haze, so low views read as sky, not grey
   const SUN_DIR = new T.Vector3(-0.6, 0.5, 0.4).normalize();
   const realSkyMat = () => new T.ShaderMaterial({
     side: T.BackSide, depthWrite: false,
@@ -8746,12 +8747,12 @@ html[data-bg3d] #skyline-layer, html[data-bg3d] .landmark-art { display: none !i
       + 'float fbm(vec2 q){float v=0.,a=.5;for(int i=0;i<6;i++){v+=a*n(q);q=q*2.03+vec2(1.7,9.2);a*=.5;}return v;}'
       + 'void main(){vec3 d=normalize(p);float y=d.y;float e=max(y,0.);'
       // sky colour: a narrow pale horizon, clear Dubai blue above it, deeper blue overhead
-      + 'vec3 c=mix(haze,vec3(.50,.70,.95),smoothstep(0.,.10,e));'
-      + 'c=mix(c,vec3(.16,.38,.78),smoothstep(.08,.70,e));'
+      + 'vec3 c=mix(haze,vec3(.46,.68,.95),smoothstep(0.,.11,e));'   // gentle: the map edge (faded to haze) meets the sky without a line
+      + 'c=mix(c,vec3(.16,.38,.78),smoothstep(.06,.65,e));'
       + 'if(y>.005){'
       // 1) mid-level fair-weather cumulus: shaped by two noise octaves, lit from the sun side
       + 'vec2 uv=d.xz/(y+.12)*.9+vec2(t*.004,t*.0015);float a=fbm(uv);float b=fbm(uv*2.1+3.);'
-      + 'float cov=smoothstep(.52,.72,a*.75+b*.25)*smoothstep(.0,.20,y);'
+      + 'float cov=smoothstep(.52,.72,a*.75+b*.25)*smoothstep(.0,.07,y);'   // clouds come down nearer the horizon
       + 'float sh=clamp((a-fbm(uv+sunDir.xz*.06))*5.+.62,0.,1.);'
       + 'vec3 cc=mix(vec3(.70,.76,.87),vec3(1.,.99,.97),sh);c=mix(c,cc,cov*.94);'
       // 2) high thin cirrus streaks, drifting a different way
@@ -9893,6 +9894,173 @@ html.nav-menu-open { scrollbar-gutter: stable; }
 })();
 </script>
 
+<!-- Navigation v2: a floating glass pill (logo, current section, Contact, Menu), labelled section rail,
+     and a full-screen menu over the blurred 3D city. Re-skins #nav; the Phase 4 menu logic is reused. -->
+<style id="beacon-nav-pill">
+/* --- the pill ---------------------------------------------------------- */
+#nav {
+  position: fixed !important; top: 12px !important; left: 0 !important; right: 0 !important;
+  translate: none !important; transform: none !important;     /* no transform: the menu inside must cover the screen */
+  width: fit-content !important; max-width: calc(100% - 24px); margin-inline: auto !important;
+  display: flex !important; align-items: center !important; gap: 10px !important;
+  height: 54px; padding: 6px 6px 6px 16px !important; border-radius: 999px !important;
+  background: transparent !important; border: 0 !important; box-shadow: none !important;
+  -webkit-backdrop-filter: none !important; backdrop-filter: none !important;   /* glass moves to ::before */
+  isolation: isolate;
+}
+#nav::before {
+  content: "" !important; display: block !important; position: absolute; inset: 0; width: auto; height: auto;
+  z-index: -1; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(135deg, rgba(255,255,255,.82), rgba(255,255,255,.62)) !important;
+  border: 1px solid rgba(255,255,255,.8);
+  box-shadow: 0 14px 40px rgba(0,55,125,.16), inset 0 1px 0 #fff;
+  -webkit-backdrop-filter: blur(18px) saturate(160%); backdrop-filter: blur(18px) saturate(160%);
+}
+#nav::after { display: none !important; }
+#nav .brand img { height: 30px; width: auto; }
+#nav .nav-section {
+  display: inline-flex; align-items: center; gap: 8px; padding: 0 12px 0 14px; min-width: 9.5em;
+  border-left: 1px solid rgba(0,74,173,.14);
+  font-size: .86rem; font-weight: 700; color: #004aad; white-space: nowrap; letter-spacing: -.005em;
+  transition: opacity .25s ease;
+}
+#nav .nav-section::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #F5811E; flex: none; }
+#nav .nav-section.is-changing { opacity: 0; }
+#nav .nav-cta { display: inline-flex !important; min-height: 42px; }
+#nav .burger {
+  display: inline-flex !important; align-items: center; gap: 8px; position: relative;
+  width: auto !important; height: 42px; padding: 0 16px 0 44px; border-radius: 999px;
+  background: rgba(0,74,173,.08); color: #004aad; font: inherit; font-size: .84rem; font-weight: 700;
+  transition: background .2s ease;
+}
+#nav .burger:hover { background: rgba(0,74,173,.14); }
+#nav .burger::after { content: "Menu"; }
+#nav .burger[aria-expanded="true"]::after { content: "Close"; }
+#nav .burger span { left: 16px !important; right: auto !important; width: 18px; }
+#nav .burger span:nth-child(1) { top: 16px; } #nav .burger span:nth-child(2) { top: 24px; }
+#nav .burger span { transition: top .22s var(--ease), transform .22s var(--ease); }
+#nav .burger[aria-expanded="true"] span:nth-child(1) { top: 20px; transform: rotate(45deg); }
+#nav .burger[aria-expanded="true"] span:nth-child(2) { top: 20px; transform: rotate(-45deg); }
+
+/* --- the full-screen menu -------------------------------------------- */
+#nav .links {
+  position: fixed !important; inset: 0 !important; top: 0 !important; right: 0 !important; left: 0 !important;
+  width: auto !important; max-height: none !important; z-index: -2;
+  justify-self: stretch !important; align-self: stretch !important;   /* base .links centres itself, which Chrome applies to fixed boxes too */
+  display: grid !important; grid-template-columns: repeat(2, minmax(0, 400px)); justify-content: center; align-content: center;
+  gap: 4px 48px; padding: 96px max(24px, env(safe-area-inset-right, 0px)) 48px max(24px, env(safe-area-inset-left, 0px)) !important;
+  border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  background: rgba(240,246,253,.62) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(140%); backdrop-filter: blur(22px) saturate(140%);
+  overflow-y: auto; overscroll-behavior: contain; counter-reset: navitem;
+  opacity: 0; visibility: hidden; transform: none !important;
+  transition: opacity .3s ease, visibility 0s linear .3s !important;
+}
+#nav .links.on { opacity: 1; visibility: visible; transition: opacity .3s ease, visibility 0s !important; }
+#nav .links a:not(.btn) {
+  counter-increment: navitem; position: relative; display: grid !important; grid-template-columns: 2.4rem 1fr;
+  align-items: baseline; min-height: 0 !important; padding: 14px 14px !important; border-radius: 16px !important;
+  font-size: clamp(1.3rem, 2.2vw, 1.75rem) !important; font-weight: 800; letter-spacing: -.02em; line-height: 1.15;
+  color: #004aad; white-space: normal !important; background: transparent;
+  transform: translateY(8px); opacity: 0; transition: transform .45s cubic-bezier(.16,1,.3,1), opacity .35s ease, background .2s ease;
+}
+#nav .links.on a:not(.btn) { transform: none; opacity: 1; }
+#nav .links.on a:nth-child(2) { transition-delay: .03s; } #nav .links.on a:nth-child(3) { transition-delay: .06s; }
+#nav .links.on a:nth-child(4) { transition-delay: .09s; } #nav .links.on a:nth-child(5) { transition-delay: .12s; }
+#nav .links.on a:nth-child(6) { transition-delay: .15s; } #nav .links.on a:nth-child(7) { transition-delay: .18s; }
+#nav .links.on a:nth-child(8) { transition-delay: .21s; } #nav .links.on a:nth-child(9) { transition-delay: .24s; }
+#nav .links a:not(.btn)::before {
+  content: counter(navitem, decimal-leading-zero); font-size: .75rem; font-weight: 700; letter-spacing: .1em; color: #b45309;
+}
+#nav .links a:not(.btn) small {
+  grid-column: 2; display: block; margin-top: 4px; font-size: .86rem; font-weight: 500; letter-spacing: 0; color: rgba(0,55,125,.72);
+}
+#nav .links a:not(.btn):hover, #nav .links a:not(.btn):focus-visible { background: rgba(255,255,255,.7); outline: none; }
+#nav .links a:not(.btn):focus-visible { box-shadow: 0 0 0 2px #004aad; }
+#nav .links a[aria-current]:not(.btn) { background: rgba(255,255,255,.78); }
+#nav .links a[aria-current]:not(.btn)::after {
+  content: "You are here"; position: absolute; right: 14px; top: 18px; left: auto; bottom: auto; width: auto; height: auto; margin: 0;
+  border-radius: 999px; background: none; font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #b45309;
+}
+#nav .links .mob {
+  display: inline-flex !important; grid-column: 1 / -1; justify-self: center; margin-top: 22px !important;
+  min-height: 48px !important; padding: 12px 30px !important; font-size: .95rem !important;
+}
+html.nav-menu-open .slide-nav, html.nav-menu-open .wa-float { opacity: 0 !important; pointer-events: none !important; }
+
+/* --- section rail: names appear on hover and keyboard focus ----------- */
+.slide-dot { position: relative; }
+.slide-dot::after {
+  content: attr(title); position: absolute; right: calc(100% + 12px); top: 50%; transform: translate(6px, -50%);
+  padding: 5px 10px; border-radius: 999px; white-space: nowrap; pointer-events: none;
+  background: rgba(255,255,255,.88); box-shadow: 0 6px 18px rgba(0,55,125,.14);
+  font: 700 .74rem/1.2 Inter, system-ui, sans-serif; color: #004aad;
+  opacity: 0; transition: opacity .2s ease, transform .2s ease;
+}
+.slide-dot:hover::after, .slide-dot:focus-visible::after { opacity: 1; transform: translate(0, -50%); }
+
+/* --- tablet and phone ---------------------------------------------- */
+@media (max-width: 1023px) {
+  #nav { height: 52px; padding-left: 14px !important; }
+  #nav .nav-cta { display: none !important; }                  /* Contact lives in the menu on small screens */
+  #nav .links { grid-template-columns: minmax(0, 1fr); align-content: start; padding-top: 84px !important; gap: 2px; }
+  #nav .links a:not(.btn) { font-size: 1.3rem !important; padding: 12px 10px !important; }
+}
+@media (max-width: 420px) {
+  #nav .nav-section { min-width: 0; padding-right: 6px; font-size: .8rem; }
+  #nav .burger { padding: 0 12px 0 40px; }
+  #nav .burger span { left: 13px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #nav .links, #nav .links a:not(.btn), #nav .nav-section { transition: none !important; }
+  #nav .links a:not(.btn) { transform: none; opacity: 1; }
+}
+</style>
+
+<script id="beacon-nav-pill-js">
+(() => {
+  const nav = document.getElementById('nav'), panel = document.getElementById('lk'), btn = document.getElementById('mb');
+  const label = document.getElementById('navSection');
+  if (!nav || !panel || !btn || !label) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Current section name in the pill, from the aria-current state the Phase 4 script maintains
+  const nameOf = a => (a.firstChild && a.firstChild.nodeType === 3 ? a.firstChild.textContent : a.textContent).trim();
+  let shown = label.textContent;
+  const update = () => {
+    const cur = panel.querySelector('a[aria-current]');
+    let next = cur ? nameOf(cur) : null;
+    if (!next) {
+      const contact = document.getElementById('contact');
+      next = contact && contact.getBoundingClientRect().top < innerHeight * 0.5 ? 'Contact' : 'Home';
+    }
+    if (next === shown) return;
+    shown = next;
+    if (reduce) { label.textContent = next; return; }
+    label.classList.add('is-changing');
+    setTimeout(() => { label.textContent = shown; label.classList.remove('is-changing'); }, 180);
+  };
+  new MutationObserver(update).observe(panel, { subtree: true, attributes: true, attributeFilter: ['aria-current'] });
+  addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+  update();
+
+  // The menu now covers the screen: tapping its empty background closes it
+  panel.addEventListener('click', e => { if (e.target === panel) btn.click(); });
+
+  // Focus order: the pill's Menu button comes before the menu items it controls
+  nav.insertBefore(btn, panel);
+  // ...so Tab cycles Close -> items -> Close while the menu is open (replaces the older trap, which assumed
+  // the button came last; capture phase + stopImmediatePropagation keeps both from moving focus twice)
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Tab' || !panel.classList.contains('on')) return;
+    const cycle = [btn, ...panel.querySelectorAll('a')];
+    const i = cycle.indexOf(document.activeElement);
+    const next = i === -1 ? 0 : (i + (e.shiftKey ? -1 : 1) + cycle.length) % cycle.length;
+    e.preventDefault(); e.stopImmediatePropagation();
+    cycle[next].focus();
+  }, true);
+})();
+</script>
 
 </body>
 </html>
