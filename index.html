@@ -9631,6 +9631,84 @@ html.nav-menu-open { scrollbar-gutter: stable; }
 .rv-viewport:focus-within .rv-track { animation-play-state: paused; }
 </style>
 
+<!-- Section fixes: Tax Calculator, Team, Location and Contact. -->
+<style id="beacon-section-fixes">
+/* 1. Tax calculator: tighter panel so the CTA is on screen, plus a disclaimer */
+@media (min-width: 1024px) {
+  #calc .calc-left-wrapper { padding-block: 26px !important; }
+  #calc .wh { margin-bottom: 12px !important; }
+  #calc .wh .lead { margin-top: 6px; }
+  #calc .calc-card-outer { padding-block: 22px !important; }
+}
+#calc .calc-presets { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+#calc .preset-btn { min-height: 36px; padding-inline: 4px; }
+@media (min-width: 1024px) {
+  #calc .calc-savings-box { padding: 14px 16px !important; }
+  #calc .calc-savings-box > span { white-space: nowrap; }
+  #calc .calc-display-panel { gap: 12px !important; }
+}
+#calc .calc-disclaimer { margin: 14px 0 0; font-size: .74rem; line-height: 1.45; color: rgba(0,55,125,.72); }
+
+/* 2. Team: keyboard focus, and a stacked active card on tablets/phones (text was clipped) */
+#team .ta-card:focus-visible { outline: 3px solid #004aad; outline-offset: 3px; }
+@media (max-width: 1020px) {
+  #team .team-accordion { height: auto !important; min-height: 0 !important; flex-direction: column; }
+  #team .ta-card { flex: 0 0 64px !important; }
+  #team .ta-card .ta-img-col img { object-position: center 25%; }
+  #team .ta-card.active { flex: 0 0 auto !important; flex-direction: column; }
+  #team .ta-card.active .ta-img-col { width: 100% !important; height: 260px; }
+  #team .ta-card.active .ta-text-col {
+    min-width: 0 !important; width: 100% !important; max-width: none !important;
+    padding: 18px 20px 22px !important;
+  }
+  #team .ta-name { font-size: 1.35rem; }
+}
+
+/* 3. Location/FAQ: map and chat share one height so the panel fits a 900px screen */
+@media (min-width: 1024px) {
+  #location .location-map-shell iframe { height: clamp(300px, 46vh, 420px) !important; }
+  #location .loc-chat { max-height: calc(clamp(300px, 46vh, 420px) + 80px); }
+}
+
+/* 4. Contact: the lower floating note no longer covers "Talk to a consultant" */
+@media (min-width: 761px) {
+  #contact .beacon-cta4-float-bottom { bottom: -14px !important; left: -44px !important; }
+}
+</style>
+
+<script id="beacon-site-polish-js">
+(() => {
+  // Team cards: reachable and operable from the keyboard (they were click/hover-only divs)
+  const cards = Array.from(document.querySelectorAll('#team .ta-card'));
+  const sync = () => cards.forEach(c => c.setAttribute('aria-expanded', String(c.classList.contains('active'))));
+  cards.forEach(card => {
+    const name = card.querySelector('.ta-name')?.textContent.trim() || 'team member';
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', 'Show profile: ' + name);
+    card.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      cards.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      sync();
+    });
+    card.addEventListener('click', sync);
+    card.addEventListener('mouseenter', sync);
+  });
+  sync();
+
+  // Tax calculator disclaimer (indicative figures only)
+  const controls = document.querySelector('#calc .calc-controls');
+  if (controls && !document.querySelector('#calc .calc-disclaimer')) {
+    const p = document.createElement('p');
+    p.className = 'calc-disclaimer';
+    p.textContent = 'Indicative estimate only, based on headline rates. Not tax advice.';
+    controls.appendChild(p);
+  }
+})();
+</script>
+
 
 </body>
 </html>
